@@ -11,12 +11,9 @@ public class ITPM_ProjectNB extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("home.fxml"));
-        
-      //  Scene scene = new Scene(root);
-        
+        Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         primaryStage.setTitle("UIT Home");
-        primaryStage.setScene(new Scene(root, 1291, 820));
+        primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.show();
     }
 
