@@ -170,7 +170,11 @@ public class WorksheduleController implements Initializable {
             
              insertRecord();
              btngenerate.getId();
-             
+             if(countRecords() == 0){
+                btngenerate.setDisable(false);
+            }else{
+             btngenerate.setDisable(true);
+             }
         }
         else if(event.getSource() == btnview){
               showWorkSheule();
@@ -180,6 +184,9 @@ public class WorksheduleController implements Initializable {
         }
         else if(event.getSource() == btndelete){
             delete();
+            if(countRecords() == 0){
+                btngenerate.setDisable(false);
+            }
         }
        
     }
@@ -199,7 +206,27 @@ public class WorksheduleController implements Initializable {
     }
     
     
+    private int countRecords(){
+        
+        int count = 0;
+        conn = getConnection();
+        
+        String sql = "Select count(id) from ws ";
+        try {
+            pst=conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+          
+          while(rs.next()){
+              count = rs.getInt(1);
+          }
+          
+        } catch (SQLException ex) {
+            Logger.getLogger(TimetableController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     
+        return count;
+    }
     
     
     
@@ -529,6 +556,7 @@ public class WorksheduleController implements Initializable {
             pst.execute();
             clearFields();
             showWorkSheule();
+            label1.setText("");
             }catch(Exception e){
                 e.printStackTrace();
                 

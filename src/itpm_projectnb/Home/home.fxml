@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
@@ -168,6 +169,11 @@
                   </FontAwesomeIconView>
                </graphic>
             </Button>
+            <HBox layoutX="939.0" layoutY="17.0" prefHeight="57.0" prefWidth="198.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#handlebtnTimetable" prefHeight="65.0" prefWidth="239.0" text="GENERATE TIMETABLE" />
+               </children>
+            </HBox>
          </children>
       </Pane>
    </top>
