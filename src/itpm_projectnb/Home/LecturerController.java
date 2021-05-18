@@ -306,7 +306,8 @@ public class LecturerController implements Initializable {
     }
 
     private boolean validateName() {
-        Pattern p = Pattern.compile("[a-z A-Z]+");
+        Pattern p = Pattern.compile("^[a-z A-Z0-9.-]*$");
+        //Pattern p = Pattern.compile("^[a-zA-Z\\s]*$");
         Matcher m = p.matcher(txtEmpName.getText());
         if (m.find() && m.group().equals(txtEmpName.getText())) {
             return true;
