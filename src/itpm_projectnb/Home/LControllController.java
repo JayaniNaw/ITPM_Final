@@ -548,10 +548,10 @@ public class LControllController implements Initializable {
 
                                 break;
                             default:
-                                cMonday.setSelected(true);
+                                //cMonday.setSelected(true);
                                 //cTuesday.setSelected(true);
-                                cWednesday.setSelected(true);
-                                cThursday.setSelected(true);
+                                //cWednesday.setSelected(true);
+                                //cThursday.setSelected(true);
                             //cFriday.setSelected(true);
                             //cSaturday.setSelected(true);
                             //cSunday.setSelected(true);
