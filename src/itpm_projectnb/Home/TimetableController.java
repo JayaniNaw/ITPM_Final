@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -64,13 +66,28 @@ public class TimetableController implements Initializable{
     
     @FXML
     private TableColumn<TimeTable, String> colmon;
+    
+    @FXML
+    private TableColumn<TimeTable, String> colltue;
+
+    @FXML
+    private TableColumn<TimeTable, String> colwed;
+
+    @FXML
+    private TableColumn<TimeTable, String> colthur;
+
+    @FXML
+    private TableColumn<TimeTable, String> colfri;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 //     labelslot.setText(generateSlot().toString());
        displayLecturers();//fill combobox tab1
-      
-    
+       
+        
+       
+//           colmon.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
+           
     }
     
     @FXML
@@ -130,9 +147,7 @@ public class TimetableController implements Initializable{
     @FXML
     private TableColumn<TimeTable,String> colSlot;
     
-     @FXML
-    private Label labelslot;
-     
+  
      @FXML
     private TableView<TimeTable> tbltime;
     
@@ -221,13 +236,13 @@ public class TimetableController implements Initializable{
         String val = "";
         conn = getConnection();
         
-        String sql = "Select * from sessions where Lecture1 = '"+T_lecture.getValue()+"'";
+        String sql = "Select * from sessions where Lecturer1 = '"+T_lecture.getValue()+"'";
         try {
             pst=conn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
           
           while(rs.next()){
-              val = rs.getString(2);
+              val = rs.getString(12);
           }
           
         } catch (SQLException ex) {
@@ -235,6 +250,36 @@ public class TimetableController implements Initializable{
         }
         return val;
     }
+    
+//    public ObservableList<TimeTable> getSession(){
+//    
+//        ObservableList<TimeTable> sesslist = FXCollections.observableArrayList();
+//        conn = getConnection();
+//        String query = "Select * from sessions where Lecturer1 = '"+T_lecture.getValue()+"'";
+//        Statement st ;
+//        ResultSet rs;
+//        
+//        try{
+//        
+//        st = conn.createStatement();
+//        rs = st.executeQuery(query);
+//        //sessions sess;
+//        
+//        while(rs.next()){
+////            sess =  new sessions(rs.getInt("ID"),rs.getString("Lecturer1"),rs.getString("Lecturer2"),rs.getString("AdditionalLecturer1"),rs.getString("AdditionalLecturer2"),
+////                    
+////                    rs.getString("Tag"),rs.getString("GroupID"),rs.getString("SubjectCode"),rs.getString("Subject"),rs.getString("NoOfStudents"),rs.getString("Duration"),rs.getString("sessionID"));
+////            sesslist.add(sess);
+//
+//           TimeTable e= new TimeTable(rs.getString(12));
+//           sesslist.add(e);
+//        }
+//        }catch(Exception ex){
+//        ex.printStackTrace();
+//        
+//        }
+//        return sesslist;
+//    }
     
     private String gettstart(){
         String val= "";
@@ -255,9 +300,29 @@ public class TimetableController implements Initializable{
         return val;
     }
     
+    private String getpday(){
+        String val= "";
+        conn = getConnection();
+        
+        String sql = "Select * from prefertime where sessionID = '"+getSession()+"'";
+        try {
+            pst=conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+          
+          while(rs.next()){
+              val = rs.getString(3);
+          }
+          
+        } catch (SQLException ex) {
+            Logger.getLogger(TimetableController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return val;
+    }
+    
     //generate timeslot for tab1
     private void generateSlot(){    
         ObservableList<TimeTable> slotlist = FXCollections.observableArrayList();
+       // ObservableList<TimeTable> sessionlist = getSession();
         String starttime = getStartTime();
         int slotcount = getSlotcount();
 
@@ -278,17 +343,15 @@ public class TimetableController implements Initializable{
             TimeTable tslot;
             
                 for (int i = 0; i < 9; i++) {
-                        
+                
                 String slotStartTime = slotTime.format(startCalendar.getTime());
-//                if(slotStartTime.equals(gettstart())){
-//                    colmon.setCellValueFactory(value);
-//                }
+                
                 startCalendar.add(Calendar.MINUTE, slotcount);
                 String slotEndTime = slotTime.format(startCalendar.getTime());
                 
-         
-
                 String day = slotStartTime + " - " + slotEndTime;
+                
+                
                 if(i == getInterval()){
                      day = "Interval";
                      tslot=new TimeTable(day);
@@ -296,21 +359,40 @@ public class TimetableController implements Initializable{
                  
                slotlist.add(tslot);
                colSlot.setCellValueFactory(new PropertyValueFactory<>("slot")); 
-
+               
                 }
                 
                 else{
                tslot=new TimeTable(day);
                   
-                 
+               
                slotlist.add(tslot);
-               colSlot.setCellValueFactory(new PropertyValueFactory<>("slot")); 
+               colSlot.setCellValueFactory(new PropertyValueFactory<>("slot"));
+              
                tbltime.setItems(slotlist);
-               
                 }
-               
                 }
-           
+               switch(colSlot.getCellData(1)){
+                  case "08:30AM - 09:30AM":
+                  {switch (getpday()) {
+                        case "Monday":
+                            colmon.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
+                            break;
+                        case "Tuesday":
+                            colltue.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
+                            break;
+                        case "Wednesday":
+                            colwed.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
+                            break;
+                        case "Thursday":
+                            colthur.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
+                            break;
+                        case "Friday":
+                            colfri.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
+                            break;
+                    }};
+              
+              }
         } catch (Exception e) {
             
             e.printStackTrace();

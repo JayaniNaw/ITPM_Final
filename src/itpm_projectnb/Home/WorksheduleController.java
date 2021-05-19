@@ -165,16 +165,21 @@ public class WorksheduleController implements Initializable {
     
     @FXML
      void handleButtonAction(ActionEvent event) {
-        
+         
         if(event.getSource() == btngenerate){
-            
+            if(countRecords() == 1){
+              btngenerate.setDisable(true);
+              Alert alert = new Alert(Alert.AlertType.WARNING);
+              alert.setTitle("Validation");
+              alert.setHeaderText(null);
+              alert.setContentText("There you have already existing time.You can create only one record.But you can update record.");
+              alert.showAndWait();
+             }
+            if(countRecords() == 0){
              insertRecord();
              btngenerate.getId();
-             if(countRecords() == 0){
-                btngenerate.setDisable(false);
-            }else{
-             btngenerate.setDisable(true);
-             }
+             btngenerate.setDisable(false);
+            }
         }
         else if(event.getSource() == btnview){
               showWorkSheule();
@@ -211,7 +216,7 @@ public class WorksheduleController implements Initializable {
         int count = 0;
         conn = getConnection();
         
-        String sql = "Select count(id) from ws ";
+        String sql = "Select count(distinct id) from ws ";
         try {
             pst=conn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();

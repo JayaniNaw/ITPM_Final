@@ -55,10 +55,10 @@
                           <columns>
                             <TableColumn fx:id="colSlot" prefWidth="137.0" text="Time Slots" />
                             <TableColumn fx:id="colmon" minWidth="0.0" prefWidth="168.0" text="Monday" />
-                              <TableColumn prefWidth="157.0" text="Tuesday" />
-                              <TableColumn prefWidth="174.0" text="Wednesday" />
-                              <TableColumn prefWidth="176.0" text="Thursday" />
-                              <TableColumn prefWidth="183.0" text="Friday" />
+                              <TableColumn fx:id="colltue" prefWidth="157.0" text="Tuesday" />
+                              <TableColumn fx:id="colwed" prefWidth="174.0" text="Wednesday" />
+                              <TableColumn fx:id="colthur" prefWidth="176.0" text="Thursday" />
+                              <TableColumn fx:id="colfri" prefWidth="183.0" text="Friday" />
                           </columns>
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
