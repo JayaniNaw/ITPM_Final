@@ -72,7 +72,7 @@
                               <Insets top="41.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="btnLecturer" alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="LECTURERS" GridPane.columnIndex="2">
+                        <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="LECTURERS" GridPane.columnIndex="2">
                            <font>
                               <Font name="Verdana" size="15.0" />
                            </font>
@@ -86,7 +86,7 @@
                               <FontAwesomeIconView glyphName="USER" size="50" />
                            </graphic>
                         </Button>
-                        <Button fx:id="btnSession" alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="SESSION ROOMS" GridPane.columnIndex="3">
+                        <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="SESSION ROOMS" GridPane.columnIndex="3">
                            <font>
                               <Font name="Verdana" size="15.0" />
                            </font>
@@ -119,7 +119,7 @@
                               <FontAwesomeIconView glyphName="CLIPBOARD" size="50" styleClass="glyph-icon" text="" />
                            </graphic>
                         </Button>
-                        <Button fx:id="btnSubjects" alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="SUBJECTS" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="SUBJECTS" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font name="Verdana" size="15.0" />
                            </font>
