@@ -5,6 +5,7 @@
  */
 package itpm_projectnb.Home;
 
+import helpers.DbConnect;
 import com.jfoenix.controls.JFXTimePicker;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -92,9 +93,9 @@ public class LecturerController implements Initializable {
     @FXML
     private Button btnRank;
 
-    Connection con = null;
-    ResultSet rs = null;
-    PreparedStatement pst = null;
+    Connection conn = DbConnect.connectDB();
+    PreparedStatement pst;
+    
 
     /**
      * Initializes the controller class.
@@ -124,7 +125,7 @@ public class LecturerController implements Initializable {
     @FXML
     private Button btnManage;
 
-    public Connection connect() {
+   /* public Connection connect() {
         Connection con;
         try {
 
@@ -136,7 +137,7 @@ public class LecturerController implements Initializable {
             return null;
         }
 
-    }
+    }*/
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -193,10 +194,10 @@ public class LecturerController implements Initializable {
         if (event.getSource() == btnSave) {
 
             /**/
-            Connection con = connect();
+           // Connection con = connect();
             try {
 
-                Statement stat = con.createStatement();
+                Statement stat = conn.createStatement();
                 String selectQuery = "SELECT * From lecturers where empID = '" + txtEmpID.getText() + "'";
 
                 ResultSet rs = stat.executeQuery(selectQuery);
@@ -470,10 +471,10 @@ public class LecturerController implements Initializable {
     }
 
     public void insert() {
-        Connection con = connect();
+        //Connection con = connect();
         try {
 
-            Statement stat = con.createStatement();
+            Statement stat = conn.createStatement();
             // String selectQuery = "SELECT * From lecturers where empID = '" + txtEmpID.getText() + "'";
 
             // ResultSet rs = stat.executeQuery(selectQuery);
@@ -566,10 +567,10 @@ public class LecturerController implements Initializable {
     }
 
     private void excecuteQuery(String query) {
-        Connection con = connect();
+        //Connection con = connect();
         Statement st;
         try {
-            st = con.createStatement();
+            st = conn.createStatement();
             st.executeUpdate(query);
 
         } catch (Exception e) {
