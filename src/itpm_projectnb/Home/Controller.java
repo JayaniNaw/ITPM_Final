@@ -46,17 +46,15 @@ public class Controller implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
 
     }
+    @FXML
     public void handleButtonAction(ActionEvent event){
         if(event.getSource() == btnLecturer){
             loadStage("lecturer.fxml");
         
         }else if(event.getSource() == btnSubjects){
             loadStage("subjects.fxml");
-        }else if(event.getSource() == btnSession){
-            loadStage("sessions.fxml");
         }
     }
-    
     public void loadStage(String fxml) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(fxml));
