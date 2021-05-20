@@ -13,7 +13,7 @@
             <HBox prefHeight="204.0" prefWidth="629.0" spacing="10.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#handlebtnnotavailable" prefHeight="216.0" prefWidth="553.0" style="-fx-background-color: #93c2f5;" text="Manage Not Available Times" />
-                  <Button fx:id="btnSession" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="216.0" prefWidth="553.0" style="-fx-background-color: #fed8b1;" text="Add Session" />
+                  <Button mnemonicParsing="false" prefHeight="208.0" prefWidth="591.0" text="Button" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -22,7 +22,7 @@
             <HBox prefHeight="217.0" prefWidth="629.0" spacing="10.0">
                <children>
                   <Button mnemonicParsing="false" prefHeight="217.0" prefWidth="529.0" text="Button" />
-                  <Button mnemonicParsing="false" prefHeight="222.0" prefWidth="566.0" text="Button" />
+                  <Button fx:id="btnSessionRoom" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="222.0" prefWidth="566.0" style="-fx-background-color: #5DA8E9;" text="Manage Session Rooms" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
