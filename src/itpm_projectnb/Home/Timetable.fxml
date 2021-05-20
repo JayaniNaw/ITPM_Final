@@ -27,11 +27,11 @@
             </HBox>
          </children>
       </AnchorPane>
-      <TabPane layoutY="82.0" prefHeight="622.0" prefWidth="1087.0" style="-fx-background-color: #ffff;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="82.0">
+      <TabPane fx:id="getLecStdLoc" layoutY="82.0" prefHeight="622.0" prefWidth="1087.0" style="-fx-background-color: #ffff;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="82.0">
         <tabs>
-          <Tab text="Lecturer">
+          <Tab fx:id="lecturersTab" text="Lecturer">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="577.0" prefWidth="1087.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" onMouseClicked="#wtf" prefHeight="577.0" prefWidth="1087.0">
                      <children>
                         <HBox layoutX="146.0" layoutY="14.0" prefHeight="57.0" prefWidth="382.0" spacing="10.0">
                            <children>
@@ -107,14 +107,14 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Location">
+            <Tab fx:id="locationTab" text="Location">
                <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="577.0" prefWidth="1087.0">
                      <children>
                         <HBox layoutX="146.0" layoutY="14.0" prefHeight="57.0" prefWidth="382.0" spacing="10.0">
                            <children>
                               <Label prefHeight="51.0" prefWidth="70.0" text="Location" />
-                              <ComboBox prefHeight="48.0" prefWidth="295.0" />
+                              <ComboBox fx:id="T_location" onMouseClicked="#wtf" prefHeight="48.0" prefWidth="295.0" />
                            </children>
                            <padding>
                               <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
@@ -132,11 +132,11 @@
                         <TableView fx:id="tbltime_3" layoutX="41.0" layoutY="76.0" prefHeight="478.0" prefWidth="1007.0">
                           <columns>
                             <TableColumn fx:id="colSlot_tab3" prefWidth="137.0" text="Time Slots" />
-                            <TableColumn minWidth="0.0" prefWidth="168.0" text="Monday" />
-                              <TableColumn prefWidth="157.0" text="Tuesday" />
-                              <TableColumn prefWidth="174.0" text="Wednesday" />
-                              <TableColumn prefWidth="176.0" text="Thursday" />
-                              <TableColumn prefWidth="194.0" text="Friday" />
+                            <TableColumn fx:id="colMon_tab3" minWidth="0.0" prefWidth="168.0" text="Monday" />
+                              <TableColumn fx:id="colTue_tab3" prefWidth="157.0" text="Tuesday" />
+                              <TableColumn fx:id="colWed_tab3" prefWidth="174.0" text="Wednesday" />
+                              <TableColumn fx:id="colThur_tab3" prefWidth="176.0" text="Thursday" />
+                              <TableColumn fx:id="colFri_tab3" prefWidth="194.0" text="Friday" />
                           </columns>
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

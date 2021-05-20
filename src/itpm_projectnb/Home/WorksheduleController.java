@@ -6,6 +6,7 @@
 package itpm_projectnb.Home;
 
 import com.jfoenix.controls.JFXTimePicker;
+import helpers.DbConnect;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -196,25 +197,25 @@ public class WorksheduleController implements Initializable {
        
     }
 
-    Connection conn;
+//    Connection conn;
+//    
+//    public Connection getConnection(){
+//    
+//        
+//        try{
+//            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ITPM", "root","");
+//            return conn;
+//        }catch(Exception ex){
+//            System.out.println("Error: "+ex.getMessage());
+//            return null;
+//        }
+//    }
     
-    public Connection getConnection(){
-    
-        
-        try{
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ITPM", "root","");
-            return conn;
-        }catch(Exception ex){
-            System.out.println("Error: "+ex.getMessage());
-            return null;
-        }
-    }
-    
-    
+    Connection conn = DbConnect.connectDB();
     private int countRecords(){
         
         int count = 0;
-        conn = getConnection();
+//        conn = getConnection();
         
         String sql = "Select count(distinct id) from ws ";
         try {
@@ -238,7 +239,7 @@ public class WorksheduleController implements Initializable {
     public ObservableList<WorkShedule> getShedules(){
     
         ObservableList<WorkShedule> sheduleList = FXCollections.observableArrayList();
-        Connection conn = getConnection();
+//        Connection conn = getConnection();
         String query = "SELECT* FROM ws";
         Statement st ;
         ResultSet rs;
@@ -346,7 +347,7 @@ public class WorksheduleController implements Initializable {
     private Label label1;
     private void insertRecord(){
         
-        conn = getConnection();
+//        conn = getConnection();
         String query = "INSERT INTO ws(numberOfDays,days,startT,endT,slot,breakcount) VALUES(?,?,?,?,?,?)";
 
         if(validateGui()){
@@ -521,7 +522,7 @@ public class WorksheduleController implements Initializable {
             
         if(action.get() == ButtonType.OK){
         try{
-            conn = getConnection();
+//            conn = getConnection();
             int value1 = myspinner.getValue();
             String  value2 = (checkBoxes());
             String value3 = startT.getValue().toString();
@@ -555,7 +556,7 @@ public class WorksheduleController implements Initializable {
            
             if(action.get() == ButtonType.OK){
             try{
-            conn = getConnection();
+//            conn = getConnection();
             String sql = "DELETE FROM ws WHERE id = '"+ID+"'";
             pst=conn.prepareStatement(sql);
             pst.execute();

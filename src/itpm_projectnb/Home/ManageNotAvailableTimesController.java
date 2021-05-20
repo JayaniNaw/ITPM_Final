@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
@@ -117,20 +118,20 @@ public class ManageNotAvailableTimesController implements Initializable {
     private TableView<Tab1_notavailableLec> tblview1;
     
     PreparedStatement pst=null;
-    Connection conn;
+    Connection conn = DbConnect.connectDB();
     
      
-    public Connection getConnection(){
-    
-        
-        try{
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/itpm", "root","");
-            return conn;
-        }catch(Exception ex){
-            System.out.println("Error: "+ex.getMessage());
-            return null;
-        }
-    }
+//    public Connection getConnection(){
+//    
+//        
+//        try{
+//            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/itpm", "root","");
+//            return conn;
+//        }catch(Exception ex){
+//            System.out.println("Error: "+ex.getMessage());
+//            return null;
+//        }
+//    }
     
    
     @Override
@@ -197,7 +198,7 @@ public class ManageNotAvailableTimesController implements Initializable {
     public ObservableList<Tab1_notavailableLec> getNotAvailableLec(){
     
         ObservableList<Tab1_notavailableLec> lecList = FXCollections.observableArrayList();
-        Connection conn = getConnection();
+        //Connection conn = getConnection();
         String query = "SELECT* FROM notavailablelecture";
         Statement st ;
         ResultSet rs;
@@ -227,19 +228,19 @@ public class ManageNotAvailableTimesController implements Initializable {
     colgroup.setCellValueFactory(new PropertyValueFactory<>("mgroup"));
     colsgroup.setCellValueFactory(new PropertyValueFactory<>("subgroup"));
     colSid.setCellValueFactory(new PropertyValueFactory<>("sessionId"));
-    coldate.setCellValueFactory(new PropertyValueFactory<>("date"));
+    coldate.setCellValueFactory(new PropertyValueFactory<>("date1"));
     coltfrom.setCellValueFactory(new PropertyValueFactory<>("from"));
-     coltto.setCellValueFactory(new PropertyValueFactory<>("to"));
+    coltto.setCellValueFactory(new PropertyValueFactory<>("to"));
      
     tblview1.setItems(lecList);
     clearFields();
     
     }
     
-    int index = -1;
+    
     
     public void getSelected(MouseEvent event){
-        
+        int index = -1;
         index = tblview1.getSelectionModel().getSelectedIndex();
         if(index<=-1){
             return;
@@ -258,7 +259,7 @@ public class ManageNotAvailableTimesController implements Initializable {
     //insert a record
     private void insertRecord(){
         
-        conn = getConnection();
+        //conn = getConnection();
         String query = "INSERT INTO notavailablelecture(Lecturer,mgroup,SubGroup,SessionID,Date,Timefrom,Timeto) VALUES(?,?,?,?,?,?,?)";
 
         if(validateGui_tab1()){
@@ -306,7 +307,7 @@ public class ManageNotAvailableTimesController implements Initializable {
             
         if(action.get() == ButtonType.OK){
         try{
-            conn = getConnection();
+           // conn = getConnection();
             String value1 = lecId.getValue();
             String  value2 = groupId.getValue();
             String value3 = subgId.getValue();
@@ -341,7 +342,7 @@ public class ManageNotAvailableTimesController implements Initializable {
            
             if(action.get() == ButtonType.OK){
             try{
-            conn = getConnection();
+            //conn = getConnection();
             String sql = "DELETE FROM notavailablelecture WHERE id = '"+ID+"'";
             pst=conn.prepareStatement(sql);
             pst.execute();
@@ -368,7 +369,7 @@ public class ManageNotAvailableTimesController implements Initializable {
    //lectures combobox
     public void displayLecturers(){
         
-      conn = getConnection();
+      //conn = getConnection();
       try {
           ObservableList<String> leclist = FXCollections.observableArrayList();
           String sql="select empID from lecturers";
@@ -389,7 +390,7 @@ public class ManageNotAvailableTimesController implements Initializable {
     //fill group combo
     public void displayMainGroups(){
         
-      conn = getConnection();
+      //conn = getConnection();
       try {
            ObservableList<String> sessionGrouplist1 = FXCollections.observableArrayList();
            ObservableList<String> sessionGrouplist2 = FXCollections.observableArrayList();
@@ -414,7 +415,7 @@ public class ManageNotAvailableTimesController implements Initializable {
     //fill group combo
     public void displaySessions(){
         
-      conn = getConnection();
+      //conn = getConnection();
       try {
           ObservableList<String> sessionIdlist = FXCollections.observableArrayList();
           String sql="select sessionID from sessions";
@@ -434,7 +435,7 @@ public class ManageNotAvailableTimesController implements Initializable {
     
     public void displaySessions_3(){
         
-      conn = getConnection();
+      //conn = getConnection();
       try {
           ObservableList<String> sessionIdlist = FXCollections.observableArrayList();
           String sql="select sessionID from sessions";
@@ -457,15 +458,15 @@ public class ManageNotAvailableTimesController implements Initializable {
     //fill group combo
     public void displaySessionRoom(){
         
-      conn = getConnection();
+      //conn = getConnection();
       try {
           ObservableList<String> sessionlist = FXCollections.observableArrayList();
-          String sql="select sessionRoom from sessionroom";
+          String sql="select RoomName from tbllocation";
           pst=conn.prepareStatement(sql);
           ResultSet rs = pst.executeQuery();
           
           while(rs.next()){
-              sessionlist.add(rs.getString("sessionRoom"));
+              sessionlist.add(rs.getString("RoomName"));
           }
           sessionRoom.setItems(sessionlist);
         } catch (SQLException ex) {
@@ -528,7 +529,7 @@ public class ManageNotAvailableTimesController implements Initializable {
     public ObservableList<Tab2_notavailableRoom> getNotAvailableRoom(){
     
         ObservableList<Tab2_notavailableRoom> roomList = FXCollections.observableArrayList();
-        Connection conn = getConnection();
+        //Connection conn = getConnection();
         String query = "SELECT* FROM notavailablelocations";
         Statement st ;
         ResultSet rs;
@@ -540,7 +541,7 @@ public class ManageNotAvailableTimesController implements Initializable {
         Tab2_notavailableRoom location;
         
         while(rs.next()){
-            location =  new Tab2_notavailableRoom(rs.getInt("id"),rs.getString("roomId"),rs.getString("datefrom"),rs.getString("dateto"),rs.getTime("startT"),rs.getTime("endT"));
+            location =  new Tab2_notavailableRoom(rs.getInt("id"),rs.getString("roomName"),rs.getString("datefrom"),rs.getString("dateto"),rs.getTime("startT"),rs.getTime("endT"));
             roomList.add(location);
         }
         }catch(Exception ex){
@@ -566,7 +567,7 @@ public class ManageNotAvailableTimesController implements Initializable {
     }
     
     public void getSelected_tab2(MouseEvent event){
-        
+        int index = -1;
         index = tblview2.getSelectionModel().getSelectedIndex();
         if(index<=-1){
             return;
@@ -583,8 +584,8 @@ public class ManageNotAvailableTimesController implements Initializable {
     //insert a record
     private void insertRecord_tab2(){
         
-        conn = getConnection();
-        String query = "INSERT INTO notavailablelocations(roomId,datefrom,dateto,startT,endT) VALUES(?,?,?,?,?)";
+        //conn = getConnection();
+        String query = "INSERT INTO notavailablelocations(roomName,datefrom,dateto,startT,endT) VALUES(?,?,?,?,?)";
 
         if(validateGui_tab2()){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -630,7 +631,7 @@ public class ManageNotAvailableTimesController implements Initializable {
         if(validateGui_tab2()){    
         if(action.get() == ButtonType.OK){
         try{
-            conn = getConnection();
+           // conn = getConnection();
             String value1 = sessionRoom.getValue();
             LocalDate value2 = LocalDate.parse(dfrom.getValue().toString());
             LocalDate value3 = LocalDate.parse(dto.getValue().toString());
@@ -664,7 +665,7 @@ public class ManageNotAvailableTimesController implements Initializable {
            
             if(action.get() == ButtonType.OK){
             try{
-            conn = getConnection();
+            //conn = getConnection();
             String sql = "DELETE FROM notavailablelocations WHERE id = '"+ID+"'";
             pst=conn.prepareStatement(sql);
             pst.execute();
@@ -734,7 +735,7 @@ public class ManageNotAvailableTimesController implements Initializable {
     public ObservableList<Tab3_AddPreferTime> getpreferTime(){
     
         ObservableList<Tab3_AddPreferTime> timelist = FXCollections.observableArrayList();
-        Connection conn = getConnection();
+        //Connection conn = getConnection();
         String query = "SELECT* FROM prefertime";
         Statement st ;
         ResultSet rs;
@@ -746,7 +747,8 @@ public class ManageNotAvailableTimesController implements Initializable {
         Tab3_AddPreferTime prefertime;
         
         while(rs.next()){
-            prefertime =  new Tab3_AddPreferTime(rs.getInt("id"),rs.getString("sessionID"),rs.getString("preferDay"),rs.getString("preferDate"),rs.getTime("startT"),rs.getTime("endT"));
+           
+           prefertime =  new Tab3_AddPreferTime(rs.getInt("id"),rs.getString("sessionID"),rs.getString("preferDay"),rs.getString("preferDate"),rs.getTime("startT"),rs.getTime("endT"));
             timelist.add(prefertime);
         }
         }catch(Exception ex){
@@ -771,8 +773,9 @@ public class ManageNotAvailableTimesController implements Initializable {
     
     }
     
+    
     public void getSelected_tab3(MouseEvent event){
-        
+        int index = -1;
         index = tblview3.getSelectionModel().getSelectedIndex();
         if(index<=-1){
             return;
@@ -789,8 +792,8 @@ public class ManageNotAvailableTimesController implements Initializable {
     //insert a record
     private void insertRecord_tab3(){
         
-        conn = getConnection();
-        String query = "INSERT INTO prefertime(preferDay,preferDate,startT,endT) VALUES(?,?,?,?)";
+        //conn = getConnection();
+        String query = "INSERT INTO prefertime(sessionID,preferDay,preferDate,startT,endT) VALUES(?,?,?,?,?)";
 
         if(validateGui_tab3()){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -836,7 +839,7 @@ public class ManageNotAvailableTimesController implements Initializable {
         
         if(action.get() == ButtonType.OK){
         try{
-            conn = getConnection();
+            //conn = getConnection();
             String value5=sesID.getValue();
             String value1 = day.getValue();
             LocalDate value2 = LocalDate.parse(preferdate.getValue().toString());
@@ -869,7 +872,7 @@ public class ManageNotAvailableTimesController implements Initializable {
            
             if(action.get() == ButtonType.OK){
             try{
-            conn = getConnection();
+           // conn = getConnection();
             String sql = "DELETE FROM prefertime WHERE id = '"+ID+"'";
             pst=conn.prepareStatement(sql);
             pst.execute();
@@ -982,6 +985,26 @@ public class ManageNotAvailableTimesController implements Initializable {
  
     }
     
+    private String returnNotAvailableDate(String ssid){
+    
+       // conn = getConnection();
+        String value="";
+        String timeValue = "Select* from notavailablelecture where sessionID='"+ssid+"'";
+        try {
+            pst=conn.prepareStatement(timeValue);
+            ResultSet rs = pst.executeQuery();
+          
+          while(rs.next()){
+              value = rs.getString(6);
+          }
+          
+        } catch (SQLException ex) {
+            Logger.getLogger(TimetableController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return value;
+          
+    }
+    
     private boolean validateGui_tab3(){
         
         if(sesID.getSelectionModel().isEmpty()){
@@ -1003,7 +1026,7 @@ public class ManageNotAvailableTimesController implements Initializable {
             
             return false;
         }
-         if(preferdate.getEditor().getText().isEmpty() ) {
+        if(preferdate.getEditor().getText().isEmpty() ) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Validation");
             alert.setHeaderText(null);
@@ -1031,6 +1054,17 @@ public class ManageNotAvailableTimesController implements Initializable {
             
             return false;
         }
+      //  String val=returnNotAvailableDate(sesID.getValue());
+        if(day.getValue().equals(returnNotAvailableDate(sesID.getValue()))){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Validation");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select available day.Lecturer is not avaialable.");
+            alert.showAndWait();
+            
+            return false;
+        }
+         
     
         return true;
         
