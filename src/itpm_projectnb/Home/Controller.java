@@ -34,16 +34,41 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class Controller implements Initializable{
+
+    @FXML
+    private Button btnLecturer;
+    @FXML
+    private Button btnSession;
+    @FXML
+    private Button btnSubjects;
   
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
-
-
-	//workshedule
     @FXML
-    private Button btnwshedule;
+    public void handleButtonAction(ActionEvent event){
+        if(event.getSource() == btnLecturer){
+            loadStage("lecturer.fxml");
+        
+        }else if(event.getSource() == btnSubjects){
+            loadStage("subjects.fxml");
+        }
+    }
+    public void loadStage(String fxml) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(fxml));
+
+            Stage stage = new Stage();
+            stage.close();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 
     @FXML
     private void handlebtnwork(ActionEvent event) throws IOException {
@@ -106,8 +131,6 @@ public class Controller implements Initializable{
        Scene scene = new Scene(pane);
 
        Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-       window.setResizable(false);
-
        window.setScene(scene);
        window.centerOnScreen();
     }
@@ -118,8 +141,6 @@ public class Controller implements Initializable{
        Scene scene = new Scene(pane);
 
        Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-              window.setResizable(false);
-
        window.setScene(scene);
        window.centerOnScreen();
     }   
