@@ -5,6 +5,7 @@
  */
 package itpm_projectnb.Home;
 
+import helpers.DbConnect;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -96,6 +97,8 @@ public class SubManageController implements Initializable {
     ObservableList<String> yearList = FXCollections.observableArrayList("1", "2", "3", "4");
     ObservableList<String> semList = FXCollections.observableArrayList("1", "2");
 
+    Connection conn = DbConnect.connectDB();
+    PreparedStatement pst;
     /**
      * Initializes the controller class.
      */
@@ -117,7 +120,7 @@ public class SubManageController implements Initializable {
 
     }
 
-    public Connection connect() {
+    /*public Connection connect() {
         Connection con;
         try {
 
@@ -129,18 +132,18 @@ public class SubManageController implements Initializable {
             return null;
         }
 
-    }
+    }*/
 
     public ObservableList<SubManage> getBooksList() {
         ObservableList<SubManage> subjectsList = FXCollections.observableArrayList();
-        Connection con = connect();
+        //Connection con = connect();
 
         String query = "select * from subjects";
         Statement st;
         ResultSet rs;
 
         try {
-            st = con.createStatement();
+            st = conn.createStatement();
             rs = st.executeQuery(query);
             SubManage subjects;
 
@@ -282,12 +285,12 @@ public class SubManageController implements Initializable {
         tv.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                Connection con = connect();
+                //Connection con = connect();
                 try {
                     SubManage subject = (SubManage) tv.getSelectionModel().getSelectedItem();
 
                     String query = "SELECT * FROM subjects WHERE ID=?";
-                    PreparedStatement pst = con.prepareStatement(query);
+                    PreparedStatement pst = conn.prepareStatement(query);
                     pst.setInt(1, subject.getID());
                     ResultSet rs = pst.executeQuery();
 
@@ -366,10 +369,10 @@ public class SubManageController implements Initializable {
     }
 
     private void excecuteQuery(String query) {
-        Connection con = connect();
+        //Connection con = connect();
         Statement st;
         try {
-            st = con.createStatement();
+            st = conn.createStatement();
             st.executeUpdate(query);
 
         } catch (Exception e) {
