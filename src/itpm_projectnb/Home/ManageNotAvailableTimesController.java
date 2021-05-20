@@ -985,11 +985,11 @@ public class ManageNotAvailableTimesController implements Initializable {
  
     }
     
-    private String returnNotAvailableDate(String ssid){
+    private String returnNotAvailableDate(){
     
        // conn = getConnection();
         String value="";
-        String timeValue = "Select* from notavailablelecture where sessionID='"+ssid+"'";
+        String timeValue = "Select* from notavailablelecture where sessionID=?";
         try {
             pst=conn.prepareStatement(timeValue);
             ResultSet rs = pst.executeQuery();
@@ -1055,7 +1055,7 @@ public class ManageNotAvailableTimesController implements Initializable {
             return false;
         }
       //  String val=returnNotAvailableDate(sesID.getValue());
-        if(day.getValue().equals(returnNotAvailableDate(sesID.getValue()))){
+        if(preferdate.getEditor().getText().equals(returnNotAvailableDate())){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Validation");
             alert.setHeaderText(null);

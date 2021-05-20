@@ -18,6 +18,7 @@ import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import static java.util.Calendar.AM;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +28,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -123,9 +125,10 @@ public class TimetableController implements Initializable{
     private void handlebtnTimetable(ActionEvent event){
         
             if(event.getSource() == btngen_tab1){
-               ///generateSlot();
-              viewSessions_1();
-            }
+                if(validateTab1()){
+               generateSlot();
+              //viewSessions_1();
+            }}
             else if(event.getSource() == btngen_tab2){
                 generateSlot_2();
             }
@@ -302,36 +305,6 @@ public class TimetableController implements Initializable{
         return val;
     }
     
-//    public ObservableList<TimeTable> getSession(){
-//    
-//        ObservableList<TimeTable> sesslist = FXCollections.observableArrayList();
-//        conn = getConnection();
-//        String query = "Select * from sessions where Lecturer1 = '"+T_lecture.getValue()+"'";
-//        Statement st ;
-//        ResultSet rs;
-//        
-//        try{
-//        
-//        st = conn.createStatement();
-//        rs = st.executeQuery(query);
-//        //sessions sess;
-//        
-//        while(rs.next()){
-////            sess =  new sessions(rs.getInt("ID"),rs.getString("Lecturer1"),rs.getString("Lecturer2"),rs.getString("AdditionalLecturer1"),rs.getString("AdditionalLecturer2"),
-////                    
-////                    rs.getString("Tag"),rs.getString("GroupID"),rs.getString("SubjectCode"),rs.getString("Subject"),rs.getString("NoOfStudents"),rs.getString("Duration"),rs.getString("sessionID"));
-////            sesslist.add(sess);
-//
-//           TimeTable e= new TimeTable(rs.getString(12));
-//           sesslist.add(e);
-//        }
-//        }catch(Exception ex){
-//        ex.printStackTrace();
-//        
-//        }
-//        return sesslist;
-//    }
-    
     private String gettstart(){
         String val= "";
         //conn = getConnection();
@@ -370,6 +343,18 @@ public class TimetableController implements Initializable{
         return val;
     }
     
+    private boolean validateTab1(){
+        if(T_lecture.getSelectionModel().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Validation");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select the lecturer name.");
+            alert.showAndWait();
+              return false;
+        }
+        return true;
+    }
+    
     //generate timeslot for tab1
     private void generateSlot(){    
         ObservableList<TimeTable> slotlist = FXCollections.observableArrayList();
@@ -401,7 +386,7 @@ public class TimetableController implements Initializable{
                 String slotEndTime = slotTime.format(startCalendar.getTime());
                 
                 String day = slotStartTime + " - " + slotEndTime;
-                
+               
                 
                 if(i == getInterval()){
                      day = "Interval";
@@ -419,30 +404,33 @@ public class TimetableController implements Initializable{
                
                slotlist.add(tslot);
                colSlot.setCellValueFactory(new PropertyValueFactory<>("slot"));
-              
+               switch(day){
+                   
+                   case "08:30AM-09:30PM ":viewSessions_1();
+               }
                tbltime.setItems(slotlist);
                 }
                 }
-               
-                  switch (getpday()) {
-                        case "Monday":
-                            colmon.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
-                            break;
-                        case "Tuesday":
-                            colltue.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
-                            break;
-                        case "Wednesday":
-                            colwed.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
-                            break;
-                        case "Thursday":
-                            colthur.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
-                            break;
-                        case "Friday":
-                            colfri.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
-                            break;
-                    
-              
-              }
+                
+//                  switch (getpday()) {
+//                        case "Monday":
+//                            colmon.setCellValueFactory(cellData -> new ReadOnlyStringWrapper());
+//                            break;
+//                        case "Tuesday":
+//                            colltue.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
+//                            break;
+//                        case "Wednesday":
+//                            colwed.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
+//                            break;
+//                        case "Thursday":
+//                            colthur.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
+//                            break;
+//                        case "Friday":
+//                            colfri.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(getSession()));
+//                            break;
+//                    
+//              
+//              }
         } catch (Exception e) {
             
             e.printStackTrace();
@@ -464,7 +452,7 @@ public class TimetableController implements Initializable{
          
          
        //String selectQuery=  "SELECT  p.preferDay, p.startT, p.endT, p.sessionID, sr.sessionRoom FROM prefertime p, sessions s, sessionroom sr where p.sessionID = s.sessionID and s.sessionID = sr.sessionID and s.Lecturer1 = '"+ lecturer +"' ";
-       String selectQuery=  "SELECT  p.preferDay, p.startT, p.endT, p.sessionID FROM prefertime p, sessions s where p.sessionID = s.sessionID and s.Lecturer1 = '"+ lecturer +"' ";
+       String selectQuery=  "SELECT  p.preferDay, p.startT, p.endT, p.sessionID FROM prefertime p INNER JOIN sessions s ON p.sessionID = s.sessionID where s.Lecturer1 = '"+ lecturer +"' ";
 
          try {
          // String sql="select preferDay from prefertime";
@@ -474,7 +462,7 @@ public class TimetableController implements Initializable{
           while(rs.next()){
               startT =rs.getTime("p.startT").toString();
                 endT = rs.getTime("p.endT").toString();
-                //time = startT.substring(0, startT.length()-3) + " - "+ endT.substring(0, endT.length()-3);
+                time = startT.substring(0, startT.length()-3)+"AM" + " - "+ endT.substring(0, endT.length()-3)+"PM";
               sessionID = rs.getString("p.sessionID");
             // roomNumber = rs.getString("s.sessionroom");
               preferDay = rs.getString("p.preferDay");
@@ -482,15 +470,15 @@ public class TimetableController implements Initializable{
 
              
                 if ( preferDay.equals("Monday"))
-                        day1 = sessionByLocation;
+                        day1 = sessionID;
                 if ( preferDay.equals("Tuesday"))
-                        day2 = sessionByLocation;
+                        day2 = sessionID;
                 if ( preferDay.equals("Wednesday"))
-                        day3 = sessionByLocation;
+                        day3 = sessionID;
                 if ( preferDay.equals("Thursday"))
-                        day4 = sessionByLocation;
+                        day4 = sessionID;
                 if ( preferDay.equals("Friday"))
-                        day5 = sessionByLocation;
+                        day5 = sessionID;
                 
                session = new TimeTable(day1, day2, day3, day4, day5);
               sessionsList.add(session);            
