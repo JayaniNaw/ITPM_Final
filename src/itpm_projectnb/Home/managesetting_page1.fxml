@@ -6,15 +6,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="555.0" prefWidth="744.0" style="-fx-background-color: #FFFF;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="itpm_projectnb.Home.Managesetting_page1Controller">
+<AnchorPane id="AnchorPane" prefHeight="555.0" prefWidth="744.0" style="-fx-background-color: #FFFF;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="itpm_projectnb.Home.Managesetting_page1Controller">
    <children>
       <VBox layoutX="58.0" layoutY="52.0" prefHeight="421.0" prefWidth="629.0">
          <children>
             <HBox prefHeight="204.0" prefWidth="629.0" spacing="10.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#handlebtnnotavailable" prefHeight="216.0" prefWidth="553.0" style="-fx-background-color: #93c2f5;" text="Manage Not Available Times" />
-                  <Button mnemonicParsing="false" prefHeight="208.0" prefWidth="591.0" text="Button" />
+                  <Button fx:id="btnSession" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="216.0" prefWidth="553.0" style="-fx-background-color: #fed8b1;" text="Add Session" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
