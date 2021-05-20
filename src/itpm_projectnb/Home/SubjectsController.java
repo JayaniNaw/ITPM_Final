@@ -5,6 +5,7 @@
  */
 package itpm_projectnb.Home;
 
+import helpers.DbConnect;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -72,7 +73,7 @@ public class SubjectsController implements Initializable {
     @FXML
     private Spinner spEva;
 
-    Connection con;
+    //Connection con;
     PreparedStatement pst;
     @FXML
 
@@ -86,6 +87,9 @@ public class SubjectsController implements Initializable {
     private VBox rbSem;
     @FXML
     private Button btnManage;
+    
+    Connection conn = DbConnect.connectDB();
+    //PreparedStatement pst;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -108,10 +112,10 @@ public class SubjectsController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) {
         if (event.getSource() == btnSave) {
-            Connection con = connect();
+            //Connection con = connect();
             try {
 
-                Statement stat = con.createStatement();
+                Statement stat = conn.createStatement();
                 String selectQuery = "SELECT * From subjects where code = '" + txtCode.getText() + "'";
 
                 ResultSet rs = stat.executeQuery(selectQuery);
@@ -182,7 +186,7 @@ public class SubjectsController implements Initializable {
         }
     }
 
-    public Connection connect() {
+   /* public Connection connect() {
         Connection con;
         try {
 
@@ -194,7 +198,7 @@ public class SubjectsController implements Initializable {
             return null;
         }
 
-    }
+    }*/
 
     public boolean validateFields() {
         if (ddYear.getSelectionModel().isEmpty()) {
@@ -264,10 +268,10 @@ public class SubjectsController implements Initializable {
     }
 
     public void insert() {
-        Connection con = connect();
+        //Connection con = connect();
         try {
 
-            Statement stat = con.createStatement();
+            Statement stat = conn.createStatement();
             String selectQuery = "SELECT * From subjects where code = '" + txtCode.getText() + "'";
 
             ResultSet rs = stat.executeQuery(selectQuery);
@@ -304,10 +308,10 @@ public class SubjectsController implements Initializable {
     }
 
     private void excecuteQuery(String query) {
-        Connection con = connect();
+        //Connection con = connect();
         Statement st;
         try {
-            st = con.createStatement();
+            st = conn.createStatement();
             st.executeUpdate(query);
 
         } catch (Exception e) {
