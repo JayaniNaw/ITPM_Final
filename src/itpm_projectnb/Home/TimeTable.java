@@ -18,12 +18,22 @@ public class TimeTable {
     private String day4;
     private String day5;
 
-    public TimeTable(String slot,String day1) {
-        this.slot = slot;
-        this.day1 = day1;
-        
+    public String getDay2() {
+        return day2;
     }
-    
+
+    public String getDay3() {
+        return day3;
+    }
+
+    public String getDay4() {
+        return day4;
+    }
+
+    public String getDay5() {
+        return day5;
+    }
+
     public TimeTable(String slot, String day1, String day2, String day3, String day4, String day5) {
         this.slot = slot;
         this.day1 = day1;
@@ -41,25 +51,15 @@ public class TimeTable {
         this.day5 = day5;
     }
 
+    
+    public TimeTable(String slot,String day1) {
+        this.slot = slot;
+        this.day1 = day1;
+    }
+
    
-    public String getDay2() {
-        return day2;
-    }
-
-    public String getDay3() {
-        return day3;
-    }
-
-    public String getDay4() {
-        return day4;
-    }
-
-    public String getDay5() {
-        return day5;
-    }
- 
-    public TimeTable(String slot) {
-        
+    
+     public TimeTable(String slot) {
         this.slot = slot;
     }
     
