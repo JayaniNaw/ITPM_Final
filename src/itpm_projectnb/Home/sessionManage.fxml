@@ -102,7 +102,6 @@
                               </Button>
                            </children>
                         </HBox>
-                        <TextField fx:id="search" layoutX="976.0" layoutY="19.0" prefHeight="42.0" prefWidth="247.0" promptText="Search" />
                         <AnchorPane layoutX="92.0" layoutY="285.0" prefHeight="318.0" prefWidth="1156.0" style="-fx-background-color: #FFFFFF;">
                            <children>
                               <VBox layoutX="727.0" layoutY="20.0" prefHeight="35.0" prefWidth="408.0" spacing="30.0">
@@ -148,9 +147,9 @@
                                     </Label>
                                  </children>
                               </VBox>
-                              <VBox layoutX="234.0" layoutY="8.0" prefHeight="309.0" prefWidth="386.0" spacing="30.0">
+                              <VBox layoutX="234.0" layoutY="14.0" prefHeight="303.0" prefWidth="386.0" spacing="30.0">
                                  <children>
-                                    <ComboBox fx:id="ddLecturers" onAction="#retrieveLecturer1" prefHeight="61.0" prefWidth="382.0" />
+                                    <ComboBox fx:id="ddLecturers" onAction="#retrieveLecturer1" prefHeight="34.0" prefWidth="394.0" />
                                     <ComboBox fx:id="ddAdditional" onAction="#retrieveAdditionalLecturer1" prefHeight="43.0" prefWidth="422.0" />
                                     <ComboBox fx:id="ddTags" onAction="#retrieveTags" prefHeight="43.0" prefWidth="430.0" />
                                     <ComboBox fx:id="ddGroup" onAction="#retrieveGroups" prefHeight="41.0" prefWidth="428.0" />
@@ -195,6 +194,12 @@
                               <Label fx:id="txtID" layoutX="851.0" layoutY="286.0" prefHeight="29.0" prefWidth="280.0" />
                            </children>
                         </AnchorPane>
+                        <HBox layoutX="898.0" layoutY="17.0" prefHeight="40.0" prefWidth="428.0" spacing="15.0">
+                           <children>
+                              <ComboBox fx:id="ddSearch1" onAction="#retrieveDetails" prefHeight="51.0" prefWidth="194.0" />
+                              <ComboBox fx:id="ddSearch" onAction="#showSessionsGivenID" prefHeight="51.0" prefWidth="227.0" />
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
                </children>
