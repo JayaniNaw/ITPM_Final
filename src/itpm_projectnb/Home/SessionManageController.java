@@ -5,6 +5,8 @@
  */
 package itpm_projectnb.Home;
 
+import helpers.DbConnect;
+import helpers.DbConnect;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -14,7 +16,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -38,7 +39,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 
@@ -114,14 +114,23 @@ public class SessionManageController implements Initializable {
     @FXML
     private Label txtID;
     
-    ObservableList<sessions>sessionList= FXCollections.observableArrayList();
-    @FXML
+    ObservableList<String> columnDetails = FXCollections.observableArrayList("ID", "Lecturer1", "Lecturer2", "AdditionalLecturer1", "AdditionalLecturer2", "Tag","GroupID","SubGroupID","SubjectCode","Subject","NoOfStudents","Duration","sessionID");
+
+    Connection conn = DbConnect.connectDB();
+    PreparedStatement pst;
+    
+    //ObservableList<sessions>sessionList=FXCollections.observableArrayList();
     private TextField search;
     sessions session;
+    private TextField txtSearch;
+    @FXML
+    private ComboBox ddSearch;
+    @FXML
+    private ComboBox ddSearch1;
     /**
      * Initializes the controller class.
      */
-    public Connection connect() {
+    /*public Connection connect() {
         Connection con;
         try {
 
@@ -133,7 +142,7 @@ public class SessionManageController implements Initializable {
             return null;
         }
 
-    }
+    }*/
     @FXML
     public void handleButtonAction(ActionEvent event) {
 
@@ -179,38 +188,10 @@ public class SessionManageController implements Initializable {
         retrieveSubGroups();
         /*retrieveSubjectCode();*/
 
-        retrieveSubjectCode();
-        //search_sessions();
+       // retrieveSubjectCode();
+      //search();
+       ddSearch1.setItems(columnDetails);
         
-        colLecturer1.setCellValueFactory(new PropertyValueFactory<sessions, String>("Lecturer1"));
-        colLecturer2.setCellValueFactory(new PropertyValueFactory<sessions, String>("Lecturer2"));
-        colAdditional1.setCellValueFactory(new PropertyValueFactory<sessions, String>("AdditionalLecturer1"));
-        
-        
-        FilteredList<sessions>filteredData = new FilteredList<>(sessionList, e-> true);
-        
-            search.textProperty().addListener((observableValue, oldValue, newValue)->{
-                filteredData.setPredicate(session->{
-                    if(newValue == null || newValue.isEmpty()){
-                      return true;
-                  }  
-                  String lowerCaseFilter = newValue.toLowerCase();
-                  if(session.getLecturer1().toLowerCase().indexOf(lowerCaseFilter) != -1){
-                      return true;
-                  }
-                  if(session.getLecturer2().toLowerCase().indexOf(lowerCaseFilter) != -1){
-                      return true;
-                  }if(session.getAdditionalLecturer1().toLowerCase().indexOf(lowerCaseFilter) != -1){
-                      return true;
-                  }else{
-                  return false;
-                  }
-                });
-           
-            SortedList<sessions> sortedData = new SortedList<>(filteredData);
-            sortedData.comparatorProperty().bind(tv.comparatorProperty());
-            tv.setItems(sortedData);
-        });
     }  
     
        
@@ -231,14 +212,14 @@ public class SessionManageController implements Initializable {
     
     public ObservableList<sessions> getSessionsList() {
         ObservableList<sessions> sessionsList = FXCollections.observableArrayList();
-        Connection con = connect();
+        //Connection con = connect();
 
         String query = "select * from sessions";
         Statement st;
         ResultSet rs;
 
         try {
-            st = con.createStatement();
+            st = conn.createStatement();
             rs = st.executeQuery(query);
             sessions session;
 
@@ -278,12 +259,12 @@ public class SessionManageController implements Initializable {
 
     @FXML
     public void retrieveLecturer1() {
-        Connection con = connect();
+        //Connection con = connect();
         try {
             ObservableList<String> list = FXCollections.observableArrayList();
             String query = "select  name from lecturers";
 
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -299,12 +280,12 @@ public class SessionManageController implements Initializable {
     
     @FXML
     public void retrieveLecturer2() {
-        Connection con = connect();
+        //Connection con = connect();
         try {
             ObservableList<String> list = FXCollections.observableArrayList();
             String query = "select  name from lecturers";
 
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -320,12 +301,12 @@ public class SessionManageController implements Initializable {
 
     @FXML
     public void retrieveAdditionalLecturer1() {
-        Connection con = connect();
+        //Connection con = connect();
         try {
             ObservableList<String> list = FXCollections.observableArrayList();
             String query = "select  name from lecturers";
 
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
@@ -342,12 +323,12 @@ public class SessionManageController implements Initializable {
 
     @FXML
     public void retrieveAdditionalLecturer2() {
-        Connection con = connect();
+        //Connection con = connect();
         try {
             ObservableList<String> list = FXCollections.observableArrayList();
             String query = "select  name from lecturers";
 
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -363,14 +344,14 @@ public class SessionManageController implements Initializable {
 
     @FXML
     public void retrieveTags() {
-        Connection con = connect();
+       // Connection con = connect();
 
         try {
 
             ObservableList<String> list = FXCollections.observableArrayList();
             //we will get all names from lectuters table
             String query = "select TagName from tags";
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
 
             ResultSet rs = stmt.executeQuery();
             //now we get all names and add into combobox
@@ -385,7 +366,7 @@ public class SessionManageController implements Initializable {
 
     @FXML
     public void retrieveGroups() {
-        Connection con = connect();
+        //Connection con = connect();
 
         try {
 
@@ -393,7 +374,7 @@ public class SessionManageController implements Initializable {
 
             //we will get all names from lectuters table
             String query = "select GroupID from studentgroups";
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
             
             ResultSet rs = stmt.executeQuery();
             //now we get all names and add into combobox
@@ -411,14 +392,14 @@ public class SessionManageController implements Initializable {
 
     @FXML
     public void retrieveSubGroups() {
-        Connection con = connect();
+        //Connection con = connect();
 
         try {
 
             ObservableList<String> list = FXCollections.observableArrayList();
             //we will get all names from lectuters table
             String query = "select SubGroupID from studentgroups";
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
 
             ResultSet rs = stmt.executeQuery();
             //now we get all names and add into combobox
@@ -434,13 +415,13 @@ public class SessionManageController implements Initializable {
 
     @FXML
     public void retrieveSubjectCode() {
-        Connection con = connect();
+        //Connection con = connect();
 
         try {
             ObservableList<String> list = FXCollections.observableArrayList();
             //we will get all names from lectuters table
             String query = "select code from subjects";
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
 
             ResultSet rs = stmt.executeQuery();
             //now we get all names and add into combobox
@@ -454,11 +435,11 @@ public class SessionManageController implements Initializable {
 
     @FXML
     public void retrieveSubject() {
-        Connection con = connect();
+       // Connection con = connect();
         String code = ddCode.getValue().toString();
         try {
             String query = "select name from subjects where code='" + code + "'";
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
 
             ResultSet rs = stmt.executeQuery();
             //now we get all names and add into combobox
@@ -596,7 +577,7 @@ public class SessionManageController implements Initializable {
     }
     
      private boolean validateNoOfStudents() {
-        Pattern p = Pattern.compile("[0-9]{3}");
+        Pattern p = Pattern.compile("[0-9]+");
         Matcher m = p.matcher(txtNumber.getText());
         if (m.find() && m.group().equals(txtNumber.getText())) {
             return true;
@@ -633,12 +614,12 @@ public class SessionManageController implements Initializable {
     public void retrieve() {
         
         tv.setOnMouseClicked(e -> {
-            Connection con = connect();
+            //Connection con = connect();
             try {
                 sessions session = (sessions) tv.getSelectionModel().getSelectedItem();
 
                 String query = "SELECT * FROM sessions WHERE ID=?";
-                PreparedStatement pst = con.prepareStatement(query);
+                PreparedStatement pst = conn.prepareStatement(query);
                 pst.setInt(1, session.getID());
                 ResultSet rs = pst.executeQuery();
 
@@ -666,6 +647,7 @@ public class SessionManageController implements Initializable {
 
                 
         }
+                
         );
     }
     
@@ -681,7 +663,7 @@ public class SessionManageController implements Initializable {
                     alert.setTitle("Information Dialog");
                     alert.setContentText("Updated successfully");
                     alert.showAndWait();
-                    showSessions();
+                    showSessionsGivenID();
                     clear();
                 } else {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -712,10 +694,10 @@ public class SessionManageController implements Initializable {
     }
 
     private void excecuteQuery(String query) {
-        Connection con = connect();
+        //Connection con = connect();
         Statement st;
         try {
-            st = con.createStatement();
+            st = conn.createStatement();
             st.executeUpdate(query);
 
         } catch (Exception e) {
@@ -723,43 +705,9 @@ public class SessionManageController implements Initializable {
         }
     }
     
-    /*@FXML
-    public void search_sessions(){
-        
-        //ObservableList<sessions> list = getSessionsList();
-        //colID.setCellValueFactory(new PropertyValueFactory<sessions, Integer>("ID"));
-        colLecturer1.setCellValueFactory(new PropertyValueFactory<sessions, String>("Lecturer1"));
-        colLecturer2.setCellValueFactory(new PropertyValueFactory<sessions, String>("Lecturer2"));
-        colAdditional1.setCellValueFactory(new PropertyValueFactory<sessions, String>("AdditionalLecturer1"));
-        
-        
-        FilteredList<sessions>filteredData = new FilteredList<>(sessionList, e-> true);
-        
-            search.textProperty().addListener((observableValue, oldValue, newValue)->{
-                filteredData.setPredicate(session->{
-                    if(newValue == null || newValue.isEmpty()){
-                      return true;
-                  }  
-                  String lowerCaseFilter = newValue.toLowerCase();
-                  if(session.getLecturer1().toLowerCase().indexOf(lowerCaseFilter) != -1){
-                      return true;
-                  }
-                  if(session.getLecturer2().toLowerCase().indexOf(lowerCaseFilter) != -1){
-                      return true;
-                  }if(session.getAdditionalLecturer1().toLowerCase().indexOf(lowerCaseFilter) != -1){
-                      return true;
-                  }else{
-                  return false;
-                  }
-                });
-           
-            SortedList<sessions> sortedData = new SortedList<>(filteredData);
-            sortedData.comparatorProperty().bind(tv.comparatorProperty());
-            tv.setItems(sortedData);
-        });
-        
-
-    }*/
+    
+   
+   
     
      public void clear() {
         txtNumber.setText("");
@@ -778,7 +726,322 @@ public class SessionManageController implements Initializable {
         txtID.setText("");
 
     }
+     
+     public ObservableList<sessions> getSessionsListForGivenID() {
+         
+        ObservableList<sessions> sessionsList = FXCollections.observableArrayList();
+       // Connection con = connect();
 
+        String query = "select * from sessions where Lecturer1 = '"+ddSearch.getValue()+"' or ID='"+ddSearch.getValue()+"' or Lecturer2 = '"+ddSearch.getValue()+"' or AdditionalLecturer1='"+ddSearch.getValue()+"' or AdditionalLecturer2 ='"+ddSearch.getValue()+"' or Tag= '"+ddSearch.getValue()+"' or GroupID='"+ddSearch.getValue()+"' or SubGroupID ='"+ddSearch.getValue()+"' or SubjectCode='"+ddSearch.getValue()+"' or Subject='"+ddSearch.getValue()+"' or NoOfStudents='"+ddSearch.getValue()+"' or Duration='"+ddSearch.getValue()+"' or sessionID='"+ddSearch.getValue()+"' ";
+        Statement st;
+        ResultSet rs;
+
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            sessions session;
+
+            while (rs.next()) {
+                session = new sessions(rs.getInt("ID"), rs.getString("Lecturer1"), rs.getString("Lecturer2"), rs.getString("AdditionalLecturer1"), rs.getString("AdditionalLecturer2"), rs.getString("Tag"), rs.getString("GroupID"), rs.getString("SubGroupID"), rs.getString("SubjectCode"), rs.getString("Subject"), rs.getString("NoOfStudents"), rs.getString("Duration"),rs.getString("sessionID"));
+                sessionsList.add(session);
+
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return sessionsList;
+
+    }
+     
+    @FXML
+      public void showSessionsGivenID() {
+        ObservableList<sessions> list = getSessionsListForGivenID();
+        ObservableList<sessions> list1 = getSessionsList();
+
+        colID.setCellValueFactory(new PropertyValueFactory<sessions, Integer>("ID"));
+        colLecturer1.setCellValueFactory(new PropertyValueFactory<sessions, String>("Lecturer1"));
+        colLecturer2.setCellValueFactory(new PropertyValueFactory<sessions, String>("Lecturer2"));
+        colAdditional1.setCellValueFactory(new PropertyValueFactory<sessions, String>("AdditionalLecturer1"));
+        colAdditional2.setCellValueFactory(new PropertyValueFactory<sessions, String>("AdditionalLecturer2"));
+        colTag.setCellValueFactory(new PropertyValueFactory<sessions, String>("Tag"));
+        colGroupID.setCellValueFactory(new PropertyValueFactory<sessions, String>("GroupID"));
+        colSubGroup.setCellValueFactory(new PropertyValueFactory<sessions, String>("SubGroupID"));
+        colCode.setCellValueFactory(new PropertyValueFactory<sessions, String>("SubjectCode"));
+        colSubject.setCellValueFactory(new PropertyValueFactory<sessions, String>("Subject"));
+        colNumber.setCellValueFactory(new PropertyValueFactory<sessions, String>("NoOfStudents"));
+        colDuration.setCellValueFactory(new PropertyValueFactory<sessions, String>("Duration"));
+        colSessionID.setCellValueFactory(new PropertyValueFactory<sessions, String>("sessionID"));
+        
+
+        tv.setItems(list);
+        
+         
+        
+    }
+      public void retrieveDetails() {
+          ObservableList<sessions> list1 = getSessionsList();
+        if (ddSearch1.getValue().equals("ID")) {
+            tv.setItems(list1);
+            //Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = "select distinct  ID from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("ID"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }  
+        else if (ddSearch1.getValue().equals("Lecturer1")) {
+            
+            //Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = " select  distinct Lecturer1 from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("Lecturer1"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }else if (ddSearch1.getValue().equals("Lecturer2")) {
+            
+            //Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = "select  distinct Lecturer2 from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("Lecturer2"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }else if (ddSearch1.getValue().equals("AdditionalLecturer1")) {
+           
+           // Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = "select  distinct AdditionalLecturer1 from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("AdditionalLecturer1"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }else if (ddSearch1.getValue().equals("AdditionalLecturer2")) {
+            tv.setItems(list1);
+            //Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = "select  distinct AdditionalLecturer2 from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("AdditionalLecturer2"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }
+        
+        
+        
+        else if (ddSearch1.getValue().equals("Tag")) {
+            
+           // Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = "select distinct  Tag from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("Tag"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }else if (ddSearch1.getValue().equals("GroupID")) {
+            
+            //Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = "select distinct   GroupID from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("GroupID"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }else if (ddSearch1.getValue().equals("SubGroupID")) {
+            tv.setItems(list1);
+            //Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = "select distinct  SubGroupID from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("SubGroupID"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }else if (ddSearch1.getValue().equals("SubjectCode")) {
+            tv.setItems(list1);
+           // Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = "select distinct  SubjectCode from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("SubjectCode"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }else if (ddSearch1.getValue().equals("Subject")) {
+            tv.setItems(list1);
+           // Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = "select distinct  Subject from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("Subject"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }else if (ddSearch1.getValue().equals("NoOfStudents")) {
+            tv.setItems(list1);
+            //Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = "select distinct  NoOfStudents from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("NoOfStudents"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }else if (ddSearch1.getValue().equals("Duration")) {
+            tv.setItems(list1);
+           // Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = "select  distinct Duration from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("Duration"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }else if (ddSearch1.getValue().equals("sessionID")) {
+            tv.setItems(list1);
+            //Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = "select distinct  sessionID from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("sessionID"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }else if (ddSearch1.getValue().equals("GroupID")) {
+            
+            //Connection con = connect();
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList();
+                String query = "select  distinct GroupID from sessions";
+
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    list.add(rs.getString("GroupID"));
+                }
+                ddSearch.setItems(list);
+
+            } catch (Exception e) {
+
+            }
+        }
+        tv.setItems(list1);
+
+    }
      
      
      
