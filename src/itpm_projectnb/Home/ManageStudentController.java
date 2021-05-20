@@ -99,13 +99,14 @@ public class ManageStudentController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       viewGroups();
-       AcYrComb.setItems(list1);
+       viewGroups();                                                            //call this method by loading the scene
+       AcYrComb.setItems(list1);                                                //set values in combobox 
        programComb.setItems(list2);
        groupNoComb.setItems(list3);
        subgroupNoComb.setItems(list4);
     }    
     
+    ///handle button actions of update and delete buttons
     @FXML
     public void handleButtonAction(javafx.event.ActionEvent actionEvent) throws IOException {
      if (actionEvent.getSource() == updateBtn)
@@ -116,8 +117,7 @@ public class ManageStudentController implements Initializable {
        }
      else if (actionEvent.getSource() == deleteBtn)
      {
-         //deleteConfirmation("Are you sure you want to delete?");
-         AlertBox ab = new AlertBox();  
+       AlertBox ab = new AlertBox();  
        boolean isOk=  ab.deleteConfirmation("Are you sure you want to delete?");
          if (isOk)
            deleteGroup();  
@@ -125,10 +125,13 @@ public class ManageStudentController implements Initializable {
     }
     
     
-        Connection con = DbConnect.connectDB();    
-        PreparedStatement preState = null;
-        ResultSet rs = null;
-        int ID;
+     Connection con = DbConnect.connectDB();            // connect to the Dbhelper class
+     PreparedStatement preState = null;
+     ResultSet rs = null;
+     int ID;                                            //declare a global variable ID
+        
+        
+     //get groups from the database and add those to an arraylist called groupslist then pass those data to Groups class by the constructor
      public ObservableList<Groups> getGroupsList()
     {
         ObservableList<Groups> groupsList = FXCollections.observableArrayList();
@@ -151,6 +154,7 @@ public class ManageStudentController implements Initializable {
          return groupsList;
     }
      
+    //get those groups details from the grouplist then add those to the the Student Groups table 
     public void viewGroups()
     {
         
@@ -168,6 +172,7 @@ public class ManageStudentController implements Initializable {
         
     }
 
+    //setup a mouseevent action to a table so by clicking any table coulmn of group details the textfields are filled with those details so the user can edit if wants.
     @FXML
     private void handleMouseAction(MouseEvent event) {
                Groups group= stdGroupsTable.getSelectionModel().getSelectedItem();
@@ -180,6 +185,7 @@ public class ManageStudentController implements Initializable {
                txtsubgrpID.setText(group.getSubgroupID());
     }
     
+    //edit the values in texfields then by clicking the update button those values will be updated
     public void updateGroup()
     {
           String  YearAndSem = AcYrComb.getValue().toString();
@@ -201,8 +207,9 @@ public class ManageStudentController implements Initializable {
         }     
     }
     
-        public void deleteGroup()
-        {  
+   // by clicking the delete button the selected group will be deleted
+    public void deleteGroup()
+    {  
           
         try {
             String deleteQuery = "DELETE FROM studentgroups WHERE ID = '"+ ID +"' ";
@@ -213,15 +220,13 @@ public class ManageStudentController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(ManageStudentController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        }
+     }
 
     @FXML
     private void switchScene(MouseEvent event) throws IOException {
         Parent pane = FXMLLoader.load(getClass().getResource("addStudentGroups.fxml"));
-                 // pane.setVisible(true);
 
         Scene scene = new Scene(pane);
-         //     rootPane.getChildren().setAll(pane);
 
        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
        window.setScene(scene);
@@ -240,25 +245,11 @@ public class ManageStudentController implements Initializable {
    
 
         Scene scene = new Scene(pane);
-         //     rootPane.getChildren().setAll(pane);
 
        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
        window.setScene(scene);
        window.centerOnScreen();
 }
-    /*
-	public boolean deleteConfirmation(String msg) {
-	Alert dialog = new Alert(AlertType.CONFIRMATION);
-	dialog.setTitle("Confirmation");
-	dialog.setResizable(true);
-	dialog.setContentText(msg);
-	dialog.setHeaderText(null);
-	dialog.showAndWait();
-	 if (dialog.getResult() == ButtonType.OK)
-            deleteGroup();
-        return false;
-}
- */
-    
+   
 }
   

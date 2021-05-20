@@ -63,14 +63,15 @@ public class AddTagController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        TagNameComb.setItems(list1);
+        TagNameComb.setItems(list1);                                                    //set values in combobox 
         RelatedTagComb.setItems(list2);
     }    
      String tagName;
      String tagCode;
      String relatedTag;
-            
-     @FXML
+     
+    //save all data of a tag by clicking this button 
+    @FXML
     public void saveTag(javafx.event.ActionEvent actionEvent) throws IOException {
         
            if (actionEvent.getSource() == saveBtn)
@@ -79,13 +80,11 @@ public class AddTagController implements Initializable {
             }
        }
 
+    // the related tag combobox according to the tag name for preventing having mistakes
     @FXML
     public void fillComboBox()
-    {
-        
+    {     
            tagName = TagNameComb.getValue().toString();
-            // tagCode= null;
-           //  relatedTag= null;
             if (tagName.equals("Lec"))
             {                       
                  RelatedTagComb.setValue(list2.get(0));
@@ -120,6 +119,8 @@ public class AddTagController implements Initializable {
             }
 
     }
+    
+        //check whether the fielts are empty
       public boolean isEmpty()
      {              
 
@@ -130,12 +131,15 @@ public class AddTagController implements Initializable {
          else
         return false;
      }
+      
+      
+        //after those validations then only the tag will be added to the database. Else relevant error messages regarding the errors will be prompt.  
    public void insertTag()
     {   Connection con = null;
         PreparedStatement preState = null;
         ResultSet rs = null;
-        con = DbConnect.connectDB();
-                 AlertBox ab = new AlertBox();  
+        con = DbConnect.connectDB();                    // connect to the Dbhelper class
+        AlertBox ab = new AlertBox();          //create alerbox object to prompt any alerts accordingly
  
                if (!isEmpty() )
                {
@@ -170,12 +174,17 @@ public class AddTagController implements Initializable {
                    ab.displayError("Error!", "Not any value can be empty. Please fill");
 
     }
+   
+   
+       //set a tooltip text to indicate the action on the switch icon button when hover the icon button
     @FXML
      public void setToolTip()
         {
             Tooltip.install(switchIcon, new Tooltip("Switch to Manage Tags"));
         }
 
+     
+         //switch to manage tags scene from add tags.
     @FXML
     private void switchScene(MouseEvent event) throws IOException {
        Parent pane = FXMLLoader.load(getClass().getResource("manageTags.fxml"));
@@ -189,6 +198,7 @@ public class AddTagController implements Initializable {
        window.centerOnScreen();
     }
 
+        //exit the current scene
     @FXML
     private void exitScene(MouseEvent event) throws IOException {
         Parent pane = FXMLLoader.load(getClass().getResource("home.fxml"));
@@ -201,6 +211,7 @@ public class AddTagController implements Initializable {
        window.centerOnScreen();
     }
 
+        // clear all fields by clicking clear button
     @FXML
     private void clearData(ActionEvent event) {
       

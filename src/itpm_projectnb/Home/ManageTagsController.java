@@ -76,18 +76,20 @@ public class ManageTagsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        viewTags();
-        TagNameComb.setItems(list1);
+        viewTags();                                                   //call this method by loading the scene
+        TagNameComb.setItems(list1);                                 //set values in combobox 
         RelatedTagComb.setItems(list2);
     }  
-    
      Connection con = DbConnect.connectDB();
-        PreparedStatement preState = null;
-        ResultSet rs = null;
-        int ID; 
-    String tagName;
+     PreparedStatement preState = null;
+     ResultSet rs = null;
+     int ID; 
+     String tagName;
      String tagCode;
      String relatedTag;
+     
+     
+    //get tags from the database and add those to an arraylist called tagsList then pass those data to Tags class by the constructor
     public ObservableList<Tags> getTagsList()
     {
                ObservableList<Tags> tagsList = FXCollections.observableArrayList();
@@ -110,6 +112,8 @@ public class ManageTagsController implements Initializable {
          return tagsList;
     }
      
+    
+    //get those tags details from the tagsList then add those to the the Tags table 
     public void viewTags()
     {
         
@@ -122,6 +126,8 @@ public class ManageTagsController implements Initializable {
         tagsTable.setItems(list);
     }
 
+    
+   //setup a mouseevent action to a table so by clicking any table coulmn of tags details the textfields are filled with those details so the user can edit if wants.
     @FXML
     private void handleMouseAction(MouseEvent event) {
         
@@ -131,7 +137,7 @@ public class ManageTagsController implements Initializable {
          RelatedTagComb.setValue(tags.getRelatedTag());
     }
     
-    
+        // the related tag combobox according to the tag name for preventing having mistakes
     @FXML
     public void fillComboBox()
     {
@@ -173,11 +179,9 @@ public class ManageTagsController implements Initializable {
     }
     
     
+   //edit the values in texfields then by clicking the update button those values will be updated
     public void updateTag()
     {
-        //    TagName = TagNameComb.getValue().toString();
-         //    TagCode = TagCodeComb.getValue().toString();
-         //    RelatedTag = RelatedTagComb.getValue().toString();
            
         try {
             String updateQuery = "UPDATE tags SET TagName= '"+ tagName+"' , RelatedTag= '"+ relatedTag+"' WHERE ID = '"+ ID +"' ";
@@ -190,9 +194,9 @@ public class ManageTagsController implements Initializable {
         }     
     }
     
-        public void deleteTag()
-        {          
-            
+    // by clicking the delete button the selected group will be deleted
+    public void deleteTag()
+    {                     
         try {
             String deleteQuery = "DELETE FROM tags WHERE ID = '"+ ID +"' ";
             preState = con.prepareStatement(deleteQuery);
@@ -202,7 +206,7 @@ public class ManageTagsController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(ManageStudentController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        }
+     }
 
     @FXML
     private void setToolTip(MouseEvent event) {
@@ -228,13 +232,13 @@ public class ManageTagsController implements Initializable {
             AlertBox ab = new AlertBox(); 
            ab.displayInfo("Success", "Tag has been updated");
        }
-     else if (event.getSource() == deleteBtn)
-     {
-       AlertBox ab = new AlertBox();  
-       boolean isOk=  ab.deleteConfirmation("Are you sure you want to delete?");
-         if (isOk)
-            deleteTag();
-     }
+       else if (event.getSource() == deleteBtn)
+       {
+            AlertBox ab = new AlertBox();  
+            boolean isOk=  ab.deleteConfirmation("Are you sure you want to delete?");
+            if (isOk)
+              deleteTag();
+       }
     }
 
     @FXML
@@ -243,7 +247,6 @@ public class ManageTagsController implements Initializable {
    
 
         Scene scene = new Scene(pane);
-         //     rootPane.getChildren().setAll(pane);
 
        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
        window.setScene(scene);

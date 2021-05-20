@@ -84,33 +84,35 @@ public class AddStudentGroupsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-            AcYrComb.setItems(list1);
+            AcYrComb.setItems(list1);                                           //set values in combobox 
             programComb.setItems(list2);
             groupNoComb.setItems(list3);
             subgroupNoComb.setItems(list4);     
     }  
     
-                   AlertBox ab = new AlertBox();   
-        Connection con = DbConnect.connectDB();
+        AlertBox ab = new AlertBox();                                       //create alerbox object to prompt any alerts accordingly
+        Connection con = DbConnect.connectDB();                             // connect to the Dbhelper class
         PreparedStatement preState = null ;
         ResultSet rs = null;
                
-                   
+       
+        
     @FXML
     public void generateID(javafx.event.ActionEvent actionEvent) throws IOException {
      if (actionEvent.getSource() == generateIDBtn)
        {
-         
+         //check the fields have valid values to generate IDs
          if ( AcYrComb.getSelectionModel().isEmpty() ||  programComb.getSelectionModel().isEmpty() || groupNoComb.getSelectionModel().isEmpty() || subgroupNoComb.getSelectionModel().isEmpty() )
            {
                    ab.displayError("Error!", "Please fill all the relevant fields to generate IDs");
            }
-             else
-                            generateIDs();
+           else
+                generateIDs();
 
        }
     }
-     
+    
+    //save all data of a student group by clicking this button 
     @FXML
     public void saveGroup(javafx.event.ActionEvent actionEvent) throws IOException {
         
@@ -128,7 +130,7 @@ public class AddStudentGroupsController implements Initializable {
      String subgroupID;
       
    
-            
+    //generateIDs of student groups         
     public void generateIDs()
        {
             YearAndSem = AcYrComb.getValue().toString();
@@ -142,6 +144,8 @@ public class AddStudentGroupsController implements Initializable {
             subgrpID.setText(subgroupID);        
        }   
     
+    
+    //check whether the fielts are empty
       public boolean isEmpty()
      {              
 
@@ -153,6 +157,8 @@ public class AddStudentGroupsController implements Initializable {
         return false;
      }
       
+      
+      //checking that the subgroups are already added to the database before adding it.
         public boolean isSubGroupAlreadyAdded()
     { 
           String subGroupID = subgrpID.getText();
@@ -174,83 +180,66 @@ public class AddStudentGroupsController implements Initializable {
             }
                  return true;     
     }
-/*
- if ( programComb.getSelectionModel().isEmpty())
-         {
-             if ( groupNoComb.getSelectionModel().isEmpty())
-         {
-             if ( subgroupNoComb.getSelectionModel().isEmpty())
-         {
-             if ( grpID.getText().isEmpty())
-         {
-             if (  subgrpID.getText().isEmpty())
-             {
-        */
-     
-    
+        
+   
+    //after those validations then only the subgroup will be added to the database by this method. Else relevant error messages regarding the errors will be prompt.
     public void insertRecord()
     {  
-               if (!isEmpty())
-               {
-               if ( !isSubGroupAlreadyAdded())
-               {
-        try {
+        if (!isEmpty())
+        {
+            if ( !isSubGroupAlreadyAdded())
+            {
+            try {
             String query = "INSERT INTO studentgroups (YearAndSem, Programme, GroupNo, SubGroupNo, GroupID, SubGroupID) values ('"+ YearAndSem+"' , '"+ program+"' , '"+ groupNo+"' , '"+ subgroupNo+"', '"+ groupID+"', '"+ subgroupID+"' )";
             preState= con.prepareStatement(query);
             preState.execute();
             
                ab.displayInfo("Success", "A new group has been added.");
             
-        } catch (SQLException ex) {
-            Logger.getLogger(AddStudentGroupsController.class.getName()).log(Level.SEVERE, null, ex);
-        }     
-               }
-                    else               
-                        ab.displayError("Error!", "Sub Group is already added!");
-               }
-               else               
-                    ab.displayError("Error!", "Not any value can be empty. Please fill");
+                } catch (SQLException ex) {
+                Logger.getLogger(AddStudentGroupsController.class.getName()).log(Level.SEVERE, null, ex);
+                }     
+             }
+             else               
+             ab.displayError("Error!", "Sub Group is already added!");
+        }
+        else               
+         ab.displayError("Error!", "Not any value can be empty. Please fill");
     }
 
-    
+    //switch to manage student groups scene from add student groups.
     @FXML
     private void switchScene(MouseEvent event) throws IOException {
        Parent pane = FXMLLoader.load(getClass().getResource("manageStudentGroups.fxml"));
        Scene scene = new Scene(pane);
-         //     rootPane.getChildren().setAll(pane);
 
        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
        window.setScene(scene);
        window.centerOnScreen();
-      // rootPane.getChildren().setAll(pane);
-     // AlertBox av = new AlertBox();
-     // av.loadStage("manageStudentGroups.fxml");
+     
     }
 
+    //exit the current scene
     @FXML
     private void exitScene(MouseEvent event) throws IOException {
        Parent pane = FXMLLoader.load(getClass().getResource("home.fxml"));
    
 
         Scene scene = new Scene(pane);
-         //     rootPane.getChildren().setAll(pane);
 
        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
        window.setScene(scene);
        window.centerOnScreen();
 }
-       
-      // rootPane.setVisible(false);
-                  //   pane.setVisible(true);
-
-     //rootPane.getChildren().setAll(pane);
-       //bp.setCenter(pane);
+     
+    //set a tooltip text to indicate the action on the switch icon button when hover the icon button
     @FXML
         public void setToolTip()
         {
             Tooltip.install(switchIcon, new Tooltip("Switch to Manage Groups"));
         }
 
+    // clear all fields by clicking clear button
     @FXML
     private void clearData(ActionEvent event) {
         if (event.getSource() == clearBtn)
