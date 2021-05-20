@@ -28,18 +28,36 @@ import javafx.stage.StageStyle;
  */
 public class Managesetting_page1Controller implements Initializable {
 
+    @FXML
+    private Button btnSession;
+
     /**
      * Initializes the controller class.
      */
-    
-    @FXML
-    private Button btnSessionRoom;
-
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+    
+    @FXML
+    public void handleButtonAction(ActionEvent event){
+         if(event.getSource() == btnSession){
+            loadStage("sessions.fxml");
+        }
+    }
+    public void loadStage(String fxml) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(fxml));
+
+            Stage stage = new Stage();
+            stage.close();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     @FXML
     private void handlebtnnotavailable(ActionEvent event) throws IOException {
            Parent root = FXMLLoader.load(getClass().getResource("ManageNotAvailableTimes.fxml"));//new fxml for a new window
@@ -50,37 +68,12 @@ public class Managesetting_page1Controller implements Initializable {
         //specifies modality for a new window
         
         //application_modal means you cannot interact with either window until this new window is closed.
-        stage.initModality(Modality.APPLICATION_MODAL);//default is none
+       stage.initModality(Modality.APPLICATION_MODAL);//default is none
 //       stage.initOwner(btnwshedule.getScene().getWindow());
 //        stage.resizableProperty().setValue(Boolean.FALSE);
          stage.initStyle(StageStyle.UTILITY);//hides minimize and maximize
-         stage.show();
+        stage.show();
         
-    }
-    
-    
-    @FXML
-    public void handleButtonAction(ActionEvent event) {
-        if(event.getSource() == btnSessionRoom){  
-             loadStage("SessionMain.fxml");  
-             
-        }
-    }
-    
-    private void loadStage(String fxml) {
-         try {
-            Parent root = FXMLLoader.load(getClass().getResource(fxml));
-            Stage stage = new Stage();
-            //stage.close();
-            stage.setScene(new Scene(root));
-            stage.show();
-            
-            
-        } catch (IOException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    
-    
     }
     
 }
