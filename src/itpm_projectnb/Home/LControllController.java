@@ -5,6 +5,7 @@
  */
 package itpm_projectnb.Home;
 
+import helpers.DbConnect;
 import com.jfoenix.controls.JFXTimePicker;
 import java.io.IOException;
 import java.net.URL;
@@ -146,8 +147,11 @@ public class LControllController implements Initializable {
     private Button btnRank;
     @FXML
     private TableColumn<lecturers, String> colActiveDays;
+    
+    Connection conn = DbConnect.connectDB();
+    PreparedStatement pst;
 
-    public Connection connect() {
+    /*public Connection connect() {
         Connection con;
         try {
 
@@ -159,7 +163,7 @@ public class LControllController implements Initializable {
             return null;
         }
 
-    }
+    }*/
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -223,14 +227,14 @@ public class LControllController implements Initializable {
 
     public ObservableList<lecturers> getLecturersList() {
         ObservableList<lecturers> lecturesList = FXCollections.observableArrayList();
-        Connection con = connect();
+        //Connection con = connect();
 
         String query = "select * from lecturers";
         Statement st;
         ResultSet rs;
 
         try {
-            st = con.createStatement();
+            st = conn.createStatement();
             rs = st.executeQuery(query);
             lecturers lecture;
 
@@ -426,12 +430,12 @@ public class LControllController implements Initializable {
                             checkBoxList.add(cSunday.getText());
                          });*/
         tv.setOnMouseClicked(e -> {
-            Connection con = connect();
+            //Connection con = connect();
             try {
                 lecturers lect = (lecturers) tv.getSelectionModel().getSelectedItem();
 
                 String query = "SELECT * FROM lecturers WHERE ID=?";
-                PreparedStatement pst = con.prepareStatement(query);
+                PreparedStatement pst = conn.prepareStatement(query);
                 pst.setInt(1, lect.getID());
                 ResultSet rs = pst.executeQuery();
 
@@ -570,7 +574,8 @@ public class LControllController implements Initializable {
     }
 
     private boolean validateName() {
-        Pattern p = Pattern.compile("[a-z A-Z]+");
+        Pattern p = Pattern.compile("^[a-z A-Z0-9.-]*$");
+        //Pattern p = Pattern.compile("^[a-zA-Z\\s]*$");
         Matcher m = p.matcher(txtName.getText());
         if (m.find() && m.group().equals(txtName.getText())) {
             return true;
@@ -670,10 +675,10 @@ public class LControllController implements Initializable {
     }
 
     private void excecuteQuery(String query) {
-        Connection con = connect();
+        //Connection con = connect();
         Statement st;
         try {
-            st = con.createStatement();
+            st = conn.createStatement();
             st.executeUpdate(query);
 
         } catch (Exception e) {
