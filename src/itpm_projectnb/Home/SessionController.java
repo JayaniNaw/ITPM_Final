@@ -5,6 +5,7 @@
  */
 package itpm_projectnb.Home;
 
+import helpers.DbConnect;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -82,11 +83,12 @@ public class SessionController implements Initializable {
     @FXML
     private Button btnmanage;
 
-    
+    Connection conn = DbConnect.connectDB();
+    PreparedStatement pst;
     /**
      * Initializes the controller class.
      */
-    public Connection connect() {
+   /* public Connection connect() {
         Connection con;
         try {
 
@@ -98,7 +100,7 @@ public class SessionController implements Initializable {
             return null;
         }
 
-    }
+    }*/
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -181,12 +183,12 @@ public class SessionController implements Initializable {
 
     @FXML
     public void retrieveLecturer1() {
-        Connection con = connect();
+        //Connection con = connect();
         try {
             ObservableList<String> list = FXCollections.observableArrayList();
             String query = "select  name from lecturers";
 
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -202,12 +204,12 @@ public class SessionController implements Initializable {
 
     @FXML
     public void retrieveLecturer2() {
-        Connection con = connect();
+        //Connection con = connect();
         try {
             ObservableList<String> list = FXCollections.observableArrayList();
             String query = "select  name from lecturers";
 
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -223,12 +225,12 @@ public class SessionController implements Initializable {
 
     @FXML
     public void retrieveAdditionalLecturer1() {
-        Connection con = connect();
+        //Connection con = connect();
         try {
             ObservableList<String> list = FXCollections.observableArrayList();
             String query = "select  name from lecturers";
 
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
@@ -245,12 +247,12 @@ public class SessionController implements Initializable {
 
     @FXML
     public void retrieveAdditionalLecturer2() {
-        Connection con = connect();
+       // Connection con = connect();
         try {
             ObservableList<String> list = FXCollections.observableArrayList();
             String query = "select  name from lecturers";
 
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -266,14 +268,14 @@ public class SessionController implements Initializable {
 
     @FXML
     public void retrieveTags() {
-        Connection con = connect();
+        //Connection con = connect();
 
         try {
 
             ObservableList<String> list = FXCollections.observableArrayList();
             //we will get all names from lectuters table
             String query = "select TagName from tags";
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
 
             ResultSet rs = stmt.executeQuery();
             //now we get all names and add into combobox
@@ -288,7 +290,7 @@ public class SessionController implements Initializable {
 
     @FXML
     public void retrieveGroups() {
-        Connection con = connect();
+        //Connection con = connect();
 
         try {
 
@@ -296,7 +298,7 @@ public class SessionController implements Initializable {
 
             //we will get all names from lectuters table
             String query = "select GroupID from studentgroups";
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
             
             ResultSet rs = stmt.executeQuery();
             //now we get all names and add into combobox
@@ -314,14 +316,14 @@ public class SessionController implements Initializable {
 
     @FXML
     public void retrieveSubGroups() {
-        Connection con = connect();
+        //Connection con = connect();
 
         try {
 
             ObservableList<String> list = FXCollections.observableArrayList();
             //we will get all names from lectuters table
             String query = "select SubGroupID from studentgroups";
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
 
             ResultSet rs = stmt.executeQuery();
             //now we get all names and add into combobox
@@ -337,13 +339,13 @@ public class SessionController implements Initializable {
 
     @FXML
     public void retrieveSubjectCode() {
-        Connection con = connect();
+       // Connection con = connect();
 
         try {
             ObservableList<String> list = FXCollections.observableArrayList();
             //we will get all names from lectuters table
             String query = "select code from subjects";
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
 
             ResultSet rs = stmt.executeQuery();
             //now we get all names and add into combobox
@@ -357,11 +359,11 @@ public class SessionController implements Initializable {
 
     @FXML
     public void retrieveSubject() {
-        Connection con = connect();
+        //Connection con = connect();
         String code = ddCode.getValue().toString();
         try {
             String query = "select name from subjects where code='" + code + "'";
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(query);
 
             ResultSet rs = stmt.executeQuery();
             //now we get all names and add into combobox
@@ -512,7 +514,7 @@ public class SessionController implements Initializable {
     }
     
      private boolean validateNoOfStudents() {
-        Pattern p = Pattern.compile("[0-9]{3}");
+        Pattern p = Pattern.compile("[0-9]+");
         Matcher m = p.matcher(txtNumber.getText());
         if (m.find() && m.group().equals(txtNumber.getText())) {
             return true;
@@ -546,10 +548,10 @@ public class SessionController implements Initializable {
     }
 
     public void insert() {
-        Connection con = connect();
+        //Connection con = connect();
         try {
 
-            Statement stat = con.createStatement();
+            Statement stat = conn.createStatement();
             
                 String query = "INSERT INTO sessions(Lecturer1,Lecturer2,AdditionalLecturer1,AdditionalLecturer2,Tag,GroupID,SubGroupID,SubjectCode,Subject,NoOfStudents,Duration,sessionID) values('" + ddLecturers.getValue() + "','" + ddLecturers1.getValue() + "','" + ddAdditional.getValue() + "','" + ddAdditional1.getValue() + "','" + ddTags.getValue() + "','" + ddGroup.getValue()+"','"+ddSubGroup.getValue() + "','" + ddCode.getValue() + "','" + txtSubject.getText() + "','" + txtNumber.getText() + "'," + txtDuration.getText() + ",'" + txtSessionID.getText() + "')";
                 excecuteQuery(query);
@@ -567,10 +569,10 @@ public class SessionController implements Initializable {
     }
 
     private void excecuteQuery(String query) {
-        Connection con = connect();
+        //Connection con = connect();
         Statement st;
         try {
-            st = con.createStatement();
+            st = conn.createStatement();
             st.executeUpdate(query);
 
         } catch (Exception e) {
