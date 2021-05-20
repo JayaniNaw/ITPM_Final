@@ -10,49 +10,29 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="itpm_projectnb.Home.Controller">
+<BorderPane prefHeight="820.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="itpm_projectnb.Home.Controller">
    <center>
-      <GridPane alignment="center" hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@styles.css" vgap="10">
+      <GridPane alignment="center" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="820.0">
          <columnConstraints>
             <ColumnConstraints />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
          </rowConstraints>
          <children>
-            <AnchorPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #edf7f6; -fx-border-color: #7652cc;" styleClass="buttons" stylesheets="@style.css">
+            <AnchorPane prefHeight="720.0" prefWidth="1287.0" style="-fx-background-color: #edf7f6; -fx-border-color: #7652cc;" styleClass="buttons" stylesheets="@styles.css" GridPane.rowIndex="2">
                <children>
-                  <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="79.0" prefWidth="1282.0" style="-fx-background-color: #034efc;" AnchorPane.bottomAnchor="641.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Text layoutX="584.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1210.0" layoutY="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="46.0" style="-fx-background-color: #034efc;">
-                           <graphic>
-                              <FontAwesomeIconView id="user" glyphName="USER" size="50" text="">
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                              </FontAwesomeIconView>
-                           </graphic>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <ImageView fitHeight="71.0" fitWidth="59.0" layoutX="22.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@logo.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </Pane>
-                  <Line endX="974.0" layoutX="314.0" layoutY="137.0" opacity="0.3" startX="-306.0" stroke="#9832ba" />
-                  <Pane layoutX="2.0" layoutY="683.0" prefHeight="40.0" prefWidth="1291.0" style="-fx-background-color: #034efc;" />
-                  <GridPane hgap="50.0" layoutX="93.0" layoutY="205.0" vgap="50.0">
+                  <GridPane hgap="50.0" layoutX="89.0" layoutY="150.0" vgap="50.0" AnchorPane.leftAnchor="89.0" AnchorPane.rightAnchor="89.0" AnchorPane.topAnchor="150.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -64,37 +44,37 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Button id="bb" fx:id="btnDashBoard" alignment="TOP_CENTER" contentDisplay="TOP" graphicTextGap="3.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" text="DASHBOARD" wrapText="true">
+                        <Button id="bb" alignment="TOP_CENTER" contentDisplay="TOP" graphicTextGap="3.0" mnemonicParsing="false" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="DASHBOARD" wrapText="true">
                            <font>
-                              <Font name="Verdana" size="18.0" />
+                              <Font name="Verdana" size="15.0" />
                            </font>
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
-                           <graphic>
-                              <FontAwesomeIconView glyphName="LIST_ALT" size="55" styleClass="glyph-icon" text="" />
-                           </graphic>
                            <padding>
                               <Insets top="37.0" />
                            </padding>
+                           <graphic>
+                              <FontAwesomeIconView glyphName="LIST_ALT" size="55" styleClass="glyph-icon" text="" />
+                           </graphic>
                         </Button>
-                        <Button alignment="TOP_CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" text="WORK SCHEDULES" GridPane.columnIndex="1">
+                        <Button alignment="TOP_CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handlebtnwork" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="WORK SCHEDULES" GridPane.columnIndex="1">
                            <font>
-                              <Font name="Verdana" size="18.0" />
+                              <Font name="Verdana" size="15.0" />
                            </font>
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                            <graphic>
-                              <FontAwesomeIconView glyphName="CALENDAR_ALT" size="50" styleClass="glyph-icon" />
+                              <FontAwesomeIconView glyphName="CALENDAR_ALT" size="50" styleClass="glyph-icon" text="" />
                            </graphic>
                            <padding>
                               <Insets top="41.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="btnLecturer" alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" text="LECTURES" GridPane.columnIndex="2">
+                        <Button fx:id="btnLecturer" alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="LECTURERS" GridPane.columnIndex="2">
                            <font>
-                              <Font name="Verdana" size="18.0" />
+                              <Font name="Verdana" size="15.0" />
                            </font>
                            <opaqueInsets>
                               <Insets />
@@ -103,16 +83,12 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                            <graphic>
-                              <FontAwesomeIconView glyphName="FILE_TEXT" size="50" styleClass="glyph-icon" text="" textAlignment="JUSTIFY">
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                              </FontAwesomeIconView>
+                              <FontAwesomeIconView glyphName="USER" size="50" />
                            </graphic>
                         </Button>
-                        <Button fx:id="btnSession" alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" text="SESSION ROOMS" GridPane.columnIndex="3">
+                        <Button fx:id="btnSession" alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="SESSION ROOMS" GridPane.columnIndex="3">
                            <font>
-                              <Font name="Verdana" size="18.0" />
+                              <Font name="Verdana" size="15.0" />
                            </font>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -121,9 +97,9 @@
                               <FontAwesomeIconView glyphName="INSTITUTION" size="50" styleClass="glyph-icon" text="" />
                            </graphic>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" text="STUDENTS" GridPane.rowIndex="1">
+                        <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" onAction="#loadAddStudentGroups" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="STUDENTS" GridPane.rowIndex="1">
                            <font>
-                              <Font name="Verdana" size="18.0" />
+                              <Font name="Verdana" size="15.0" />
                            </font>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -132,9 +108,9 @@
                               <FontAwesomeIconView glyphName="USERS" size="50" styleClass="glyph-icon" text="" textAlignment="RIGHT" wrappingWidth="57.142884343862534" />
                            </graphic>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" text="TAGS" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" onAction="#loadTags" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="TAGS" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
-                              <Font name="Verdana" size="18.0" />
+                              <Font name="Verdana" size="15.0" />
                            </font>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -143,9 +119,9 @@
                               <FontAwesomeIconView glyphName="CLIPBOARD" size="50" styleClass="glyph-icon" text="" />
                            </graphic>
                         </Button>
-                        <Button fx:id="btnSubjects" alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" text="SUBJECTS" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <Button fx:id="btnSubjects" alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="SUBJECTS" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
-                              <Font name="Verdana" size="18.0" />
+                              <Font name="Verdana" size="15.0" />
                            </font>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -154,9 +130,9 @@
                               <FontAwesomeIconView glyphName="BOOK" size="50" styleClass="glyph-icon" text="" textAlignment="RIGHT" wrappingWidth="49.9999950453639" />
                            </graphic>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" text="MANAGE ACTIVITES" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                        <Button alignment="CENTER" contentDisplay="TOP" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handlebtnmanagesettings" prefHeight="165.0" prefWidth="240.0" style="-fx-border-color: #a883fc;" styleClass="homeButtons" text="MANAGE ACTIVITES" GridPane.columnIndex="3" GridPane.rowIndex="1">
                            <font>
-                              <Font name="Verdana" size="18.0" />
+                              <Font name="Verdana" size="15.0" />
                            </font>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -172,4 +148,36 @@
          </children>
       </GridPane>
    </center>
+   <top>
+      <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="1282.0" style="-fx-background-color: #034efc;" BorderPane.alignment="CENTER">
+         <children>
+            <Text layoutX="584.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+            <ImageView fitHeight="71.0" fitWidth="59.0" layoutX="22.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@logo.png" />
+               </image>
+            </ImageView>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="1209.0" layoutY="8.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="46.0" style="-fx-background-color: #034efc;">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <graphic>
+                  <FontAwesomeIconView id="user" glyphName="USER" size="50" text="">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </FontAwesomeIconView>
+               </graphic>
+            </Button>
+            <HBox layoutX="939.0" layoutY="17.0" prefHeight="57.0" prefWidth="198.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#handlebtnTimetable" prefHeight="65.0" prefWidth="239.0" text="GENERATE TIMETABLE" />
+               </children>
+            </HBox>
+         </children>
+      </Pane>
+   </top>
+   <bottom>
+      <Pane maxHeight="52.0" prefHeight="50.0" prefWidth="1291.0" style="-fx-background-color: #034efc;" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>
