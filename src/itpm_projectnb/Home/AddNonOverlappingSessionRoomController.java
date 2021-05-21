@@ -94,8 +94,12 @@ public class AddNonOverlappingSessionRoomController implements Initializable {
     private void insert(){
         
         String query ="INSERT INTO notoverlappingsessionroom(SessionID,RoomName	) values('"+cmbOverSession.getValue()+"','"+cmbOverSelectRoom.getValue()+"')";
-    
+        String query2 ="INSERT INTO allsessionsrooms(sessionID,sessionRoom) values('"+cmbOverSession.getValue()+"','"+cmbOverSelectRoom.getValue()+"')";
+
+        
             excecuteQuery(query);
+            excecuteQuery(query2);
+            
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information Dialog");
             alert.setContentText("Successfully Added");

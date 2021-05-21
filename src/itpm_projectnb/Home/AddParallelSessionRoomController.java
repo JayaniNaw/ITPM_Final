@@ -130,8 +130,10 @@ public class AddParallelSessionRoomController implements Initializable {
     private void insert() {
         
         String query ="INSERT INTO parallelsesionroom(SessionID,RoomName) values('"+cmbParallelSession.getValue()+"','"+cmbParallelSessionRoom.getValue()+"')";
-    
+        String query2 ="INSERT INTO allsessionsrooms(sessionID,sessionRoom) values('"+cmbParallelSession.getValue()+"','"+cmbParallelSessionRoom.getValue()+"')";
+
             excecuteQuery(query);
+            excecuteQuery(query2);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information Dialog");
             alert.setContentText("Successfully Added");
