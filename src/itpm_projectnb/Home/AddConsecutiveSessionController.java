@@ -145,8 +145,11 @@ public class AddConsecutiveSessionController implements Initializable {
       //   String query = "INSERT INTO consecutivesessionroom(conSessionID,conSessionRoom ) values('"+cmbConSession.getValue()+"','"+cmbConSelectRoom.getValue()+"')";
             
       String query ="INSERT INTO consecutivesessionroom(conSessionID,conSessionRoom) values('"+cmbConSession.getValue()+"','"+cmbConSelectRoom.getValue()+"')";
-    
+      String query2 ="INSERT INTO allsessionsrooms(sessionID,sessionRoom) values('"+cmbConSession.getValue()+"','"+cmbConSelectRoom.getValue()+"')";
+
+      
             excecuteQuery(query);
+            excecuteQuery(query2);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information Dialog");
             alert.setContentText("Successfully Added");
