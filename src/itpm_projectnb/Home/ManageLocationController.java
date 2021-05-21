@@ -232,7 +232,7 @@ public class ManageLocationController implements Initializable {
 
     public void delete() {
 
-        String query = "delete from tbllocation where BuildingName = '" + txtBuildingName.getText() + "'";
+        String query = "delete from tbllocation where RoomName = '" + txtRoomName.getText() + "'";
         excecuteQuery(query);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Information Dialog");
